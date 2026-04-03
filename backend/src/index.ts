@@ -33,7 +33,15 @@ app.use(express.json({ limit: '5mb' }));
 // clerkMiddleware is now applied within the router for specific protected endpoints
 app.use('/api/v1', apiRouter);
 
-// Basic health check route
+// Service Root & Health Checks
+app.get('/', (req, res) => {
+  res.json({ 
+    message: 'SentinelSOC Backend API & Real-Time Engine is Live',
+    version: '1.0.1',
+    status: 'operational'
+  });
+});
+
 app.get('/health', (req, res) => {
   res.json({ status: 'healthy', timestamp: new Date().toISOString() });
 });
