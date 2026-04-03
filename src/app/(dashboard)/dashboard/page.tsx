@@ -49,21 +49,47 @@ export default function OverviewPage() {
 
   useEffect(() => {
     const fetchData = async () => {
+      const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
+      
+      if (!backendUrl) {
+        console.error("NEXT_PUBLIC_BACKEND_URL is not defined in environment variables");
+        toast.error("Configuration Error", {
+          description: "Backend URL is missing. Please check your environment variables."
+        });
+        setLoading(false);
+        return;
+      }
+
       try {
         const token = await getToken();
         const headers = { Authorization: `Bearer ${token}` };
 
+        console.log(`[Dashboard] Fetching data from ${backendUrl}`);
+        
         const [profileRes, statsRes] = await Promise.all([
-          fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/tenant/me`, { headers }),
-          fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/dashboard-stats`, { headers })
+          fetch(`${backendUrl}/tenant/me`, { headers }),
+          fetch(`${backendUrl}/dashboard-stats`, { headers })
         ]);
 
-        if (profileRes.ok) setProfile(await profileRes.json());
-        if (statsRes.ok) setStats(await statsRes.json());
+        if (profileRes.ok) {
+          const profileData = await profileRes.json();
+          setProfile(profileData);
+          console.log("[Dashboard] Profile loaded:", profileData.tenantId);
+        } else {
+          console.error("[Dashboard] Profile fetch failed:", profileRes.status);
+          if (profileRes.status === 401) toast.error("Session expired. Please sign in again.");
+          else toast.error("Failed to load tenant profile");
+        }
+
+        if (statsRes.ok) {
+          setStats(await statsRes.json());
+        }
 
       } catch (err) {
-        console.error("Failed to fetch data", err);
-        toast.error("Failed to load real-time stats");
+        console.error("[Dashboard] Failed to fetch data", err);
+        toast.error("Connection Error", {
+          description: "Could not reach the security engine. Please try again later."
+        });
       } finally {
         setLoading(false);
       }
@@ -103,10 +129,17 @@ export default function OverviewPage() {
   const handleCreateKey = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newKeyName.trim() || creating) return;
+    
+    const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
+    if (!backendUrl) {
+      toast.error("Configuration error. Backend URL is missing.");
+      return;
+    }
+
     setCreating(true);
     try {
       const token = await getToken();
-      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/tenant/keys`, {
+      const res = await fetch(`${backendUrl}/tenant/keys`, {
         method: "POST",
         headers: { 
           Authorization: `Bearer ${token}`,
@@ -114,14 +147,20 @@ export default function OverviewPage() {
         },
         body: JSON.stringify({ name: newKeyName })
       });
+      
       if (res.ok) {
         const data = await res.json();
         setProfile(prev => prev ? { ...prev, apiKeys: data.apiKeys } : null);
         setNewKeyName("");
         toast.success("New API Key generated!");
+      } else {
+        const errorData = await res.json().catch(() => ({}));
+        console.error("[Dashboard] Key generation failed:", res.status, errorData);
+        toast.error(errorData.error || "Failed to generate key");
       }
     } catch (err) {
-      toast.error("Failed to generate key");
+      console.error("[Dashboard] Network error during key generation:", err);
+      toast.error("Network error. Could not connect to the server.");
     } finally {
       setCreating(false);
     }
