@@ -2,9 +2,12 @@
   "name": "sentinelsoc-monorepo",
   "version": "1.0.0",
   "private": true,
+  "workspaces": [
+    "frontend",
+    "backend"
+  ],
   "scripts": {
     "build": "npm run build --prefix frontend",
-    "install": "npm install --prefix frontend",
     "start": "npm start --prefix frontend"
   }
 }
