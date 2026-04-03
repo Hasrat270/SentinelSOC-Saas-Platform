@@ -7,6 +7,7 @@ import Navbar from "@/components/landing/Navbar";
 import Hero from "@/components/landing/Hero";
 import MetricShowcase from "@/components/landing/MetricShowcase";
 import Features from "@/components/landing/Features";
+import Docs from "@/components/landing/Docs";
 import Pricing from "@/components/landing/Pricing";
 import Footer from "@/components/landing/Footer";
 
@@ -24,6 +25,7 @@ export default async function LandingPage() {
       <Hero />
       <MetricShowcase />
       <Features />
+      <Docs />
       <Pricing />
       <Footer />
     </div>

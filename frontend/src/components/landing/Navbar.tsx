@@ -25,7 +25,7 @@ export default function Navbar() {
             Pricing
           </Link>
           <Link
-            href="https://github.com/Hasrat270/SentinelSOC-Saas-Platform"
+            href="#docs"
             className="hover:text-foreground transition-colors"
           >
             Docs
