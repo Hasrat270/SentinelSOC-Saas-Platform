@@ -33,8 +33,9 @@ export default function Navbar() {
         </div>
         <div className="flex items-center gap-4">
           <SignInButton mode="modal">
-            <Button variant="ghost" className="text-sm">
-              Sign In
+            <Button variant="ghost" className="text-sm px-2 sm:px-4">
+              <span className="hidden xs:inline">Sign In</span>
+              <span className="xs:hidden">Login</span>
             </Button>
           </SignInButton>
           <SignUpButton mode="modal">

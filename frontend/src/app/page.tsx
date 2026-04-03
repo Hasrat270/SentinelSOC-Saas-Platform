@@ -5,6 +5,7 @@ export const dynamic = "force-dynamic";
 
 import Navbar from "@/components/landing/Navbar";
 import Hero from "@/components/landing/Hero";
+import MetricShowcase from "@/components/landing/MetricShowcase";
 import Features from "@/components/landing/Features";
 import Pricing from "@/components/landing/Pricing";
 import Footer from "@/components/landing/Footer";
@@ -21,6 +22,7 @@ export default async function LandingPage() {
     <div className="min-h-screen bg-background text-foreground selection:bg-primary/30 selection:text-primary-foreground overflow-x-hidden">
       <Navbar />
       <Hero />
+      <MetricShowcase />
       <Features />
       <Pricing />
       <Footer />
