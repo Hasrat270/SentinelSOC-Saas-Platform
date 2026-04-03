@@ -1,0 +1,30 @@
+{
+  "name": "sentinel-soc-agent",
+  "version": "1.0.0",
+  "description": "Enterprise-grade real-time security middleware for Node.js/Express. Protects your infrastructure with edge-detection for SQLi, XSS, and Path Traversal attacks.",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "security",
+    "soc",
+    "middleware",
+    "express",
+    "sqli",
+    "xss",
+    "protection",
+    "firewall",
+    "sentinel-soc"
+  ],
+  "author": "SentinelSOC Enterprise",
+  "license": "UNLICENSED",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hasrat/sentinel-soc-agent"
+  },
+  "bugs": {
+    "url": "https://github.com/hasrat/sentinel-soc-agent/issues"
+  },
+  "homepage": "https://sentinel-soc.vercel.app"
+}

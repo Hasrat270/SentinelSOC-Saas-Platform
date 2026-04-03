@@ -1,0 +1,137 @@
+"use client";
+
+import * as React from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { UserButton, useClerk, useAuth } from "@clerk/nextjs";
+import { useTheme } from "next-themes";
+import { useEffect, useState } from "react";
+import { cn } from "@/lib/utils";
+import {
+  LayoutDashboard,
+  ShieldAlert,
+  Settings,
+  Zap,
+  BookOpen,
+  Moon,
+  Shield,
+  Palette,
+} from "lucide-react";
+
+const navLinks = [
+  { href: "/dashboard", label: "Overview", icon: LayoutDashboard },
+  { href: "/threat-logs", label: "Threat Logs", icon: ShieldAlert },
+  { href: "/docs", label: "Docs", icon: BookOpen },
+  { href: "/settings", label: "Settings", icon: Settings },
+];
+
+interface TenantProfile {
+  tenantId: string;
+  subscriptionPlan: 'FREE' | 'PRO';
+  logCount: number;
+}
+
+export default function Sidebar() {
+  const { openUserProfile } = useClerk();
+  const { getToken } = useAuth();
+  const pathname = usePathname();
+  const [profile, setProfile] = useState<TenantProfile | null>(null);
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const token = await getToken();
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/tenant/me`, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        if (res.ok) setProfile(await res.json());
+      } catch (err) {
+        console.error("Failed to fetch sidebar profile", err);
+      }
+    };
+    fetchProfile();
+    // Refresh every 30 seconds for live updates
+    const interval = setInterval(fetchProfile, 30000);
+    return () => clearInterval(interval);
+  }, [getToken]);
+
+  return (
+    <aside className="sticky top-0 h-screen w-64 bg-card border-r border-border px-4 py-8 flex flex-col shrink-0 transition-colors duration-500">
+      {/* Logo */}
+      <div className="flex items-center gap-3 mb-10 px-2">
+        <div className="flex items-center justify-center w-9 h-9 rounded-lg bg-primary shadow-lg shadow-primary/20">
+          <Shield className="w-5 h-5 text-white" />
+        </div>
+        <span className="text-xl font-bold tracking-tight text-foreground">
+          Sentinel<span className="text-primary">SOC</span>
+        </span>
+      </div>
+
+      {/* Navigation */}
+      <nav className="flex-1 space-y-1.5 overflow-y-auto pr-2 custom-scrollbar">
+        {navLinks.map(({ href, label, icon: Icon }) => {
+          const isActive = pathname === href;
+          return (
+            <Link
+              key={href}
+              href={href}
+              className={cn(
+                "group flex items-center gap-3 px-4 py-2.5 rounded-md text-sm font-medium transition-all duration-200",
+                isActive
+                  ? "bg-primary/10 text-primary border-r-2 border-primary rounded-r-none"
+                  : "text-muted-foreground hover:text-foreground hover:bg-secondary/50"
+              )}
+            >
+              <Icon className={cn(
+                "size-4 transition-colors",
+                isActive ? "text-primary" : "text-muted-foreground group-hover:text-foreground"
+              )} />
+              {label}
+            </Link>
+          );
+        })}
+      </nav>
+
+      {/* Usage Monitor */}
+      <div className="mt-auto px-2 pb-6 space-y-4">
+          <div className="p-4 bg-secondary/30 border border-border rounded-xl space-y-3">
+              <div className="flex justify-between items-center text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
+                  <span>Log Usage</span>
+                  <span className={cn(
+                    "font-mono",
+                    (profile?.logCount || 0) >= 450 ? "text-red-500" : "text-primary"
+                  )}>
+                    {profile?.logCount || 0} / 500
+                  </span>
+              </div>
+              <div className="h-1.5 w-full bg-background rounded-full overflow-hidden border border-border">
+                  <div 
+                    className={cn(
+                        "h-full transition-all duration-1000",
+                        (profile?.logCount || 0) >= 450 ? "bg-red-500" : "bg-primary"
+                    )}
+                    style={{ width: `${Math.min(((profile?.logCount || 0) / 500) * 100, 100)}%` }}
+                  />
+              </div>
+              <p className="text-[9px] text-muted-foreground uppercase tracking-tight leading-tight">
+                {profile?.subscriptionPlan === 'FREE' ? "Free tier limit: 500 logs/mo" : "Pro tier: Unlimited logs"}
+              </p>
+          </div>
+      </div>
+
+      {/* User */}
+      <div className="pt-6 border-t border-border">
+        <div 
+          onClick={() => openUserProfile()}
+          className="flex items-center gap-3 p-2 rounded-lg hover:bg-secondary/50 transition-all duration-200 group cursor-pointer"
+        >
+          <UserButton appearance={{ elements: { userButtonAvatarBox: "w-8 h-8" } }} />
+          <div className="flex flex-col text-left">
+            <span className="text-sm font-semibold text-foreground group-hover:text-primary transition-colors">Account</span>
+            <span className="text-[11px] text-muted-foreground tracking-tight">Enterprise Console</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+  );
+}

@@ -1,0 +1,127 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-geist-mono);
+  --font-heading: var(--font-sans);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+:root {
+  /* Premium Dark SOC Palette (Slate & Indigo) */
+  --bg-deep: oklch(0.12 0.01 240);       /* #0d1117 - Background */
+  --bg-surface: oklch(0.18 0.02 240);    /* #161b22 - Cards / Surfaces */
+  --indigo-primary: oklch(0.65 0.18 250); /* #4f46e5 - Action Primary */
+  --ink-border: oklch(0.25 0.01 240);    /* #30363d - Subtle Borders */
+  --mist-white: oklch(0.98 0.01 240);    /* #f8fafc - Primary Text */
+  --mist-muted: oklch(0.7 0.01 240);     /* #8b949e - Muted Text */
+
+  --background: var(--bg-deep);
+  --foreground: var(--mist-white);
+  --card: var(--bg-surface);
+  --card-foreground: var(--mist-white);
+  --popover: var(--bg-surface);
+  --popover-foreground: var(--mist-white);
+  --primary: var(--indigo-primary);
+  --primary-foreground: white;
+  --secondary: oklch(0.24 0.02 240);
+  --secondary-foreground: var(--mist-white);
+  --muted: oklch(0.2 0.01 240);
+  --muted-foreground: var(--mist-muted);
+  --accent: oklch(0.24 0.02 240);
+  --accent-foreground: var(--mist-white);
+  --destructive: oklch(0.6 0.25 25);     /* High Severity Red */
+  --border: var(--ink-border);
+  --input: oklch(0.15 0.01 240);
+  --ring: var(--indigo-primary);
+  --chart-1: var(--indigo-primary);
+  --chart-2: oklch(0.85 0.2 150);        /* Success Green */
+  --chart-3: oklch(0.6 0.25 25);         /* Red */
+  --chart-4: oklch(0.5 0.2 300);         /* Purple */
+  --chart-5: oklch(0.7 0.01 240);        /* Gray */
+  --radius: 0.5rem;
+  --sidebar: var(--bg-surface);
+  --sidebar-foreground: var(--mist-white);
+  --sidebar-primary: var(--indigo-primary);
+  --sidebar-primary-foreground: white;
+  --sidebar-accent: oklch(0.24 0.02 240);
+  --sidebar-accent-foreground: var(--mist-white);
+  --sidebar-border: var(--ink-border);
+  --sidebar-ring: var(--indigo-primary);
+}
+
+.dark, .leverix {
+  /* Enforce consistency regardless of mode */
+  --background: var(--bg-deep);
+  --foreground: var(--mist-white);
+  --card: var(--bg-surface);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground antialiased selection:bg-primary/20 selection:text-primary-foreground;
+  }
+}
+
+/* Custom Scrollbar for Premium SOC Experience */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--mist-muted);
+}
