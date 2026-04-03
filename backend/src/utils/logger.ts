@@ -17,10 +17,9 @@ export const logger = createLogger({
   ],
 });
 
-if (process.env.NODE_ENV !== 'production') {
-  logger.add(
-    new transports.Console({
-      format: format.combine(format.colorize(), format.simple()),
-    })
-  );
-}
+// Always add the Console transport for production visibility in Render/Vercel
+logger.add(
+  new transports.Console({
+    format: format.combine(format.colorize(), format.simple()),
+  })
+);

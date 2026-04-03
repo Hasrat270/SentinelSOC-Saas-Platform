@@ -1,3 +1,5 @@
+const { generateBlockPage } = require('./block-template');
+
 /**
  * SentinelSOC Security Agent (CommonJS)
  * ------------------------------------
@@ -71,14 +73,11 @@ const sentinelAgent = (config) => {
 
       // 4. Block the request if Protection Mode is ON
       if (config.block) {
-        return res.status(403).json({
-          status: 'error',
-          code: 'SENTINEL_BLOCK',
-          message: 'Security threat detected and blocked by SentinelSOC.'
-        });
+        return res.status(403).send(generateBlockPage(detectedThreat, logData.sourceIp));
       }
     }
 
+    // Pass control to the next middleware if safe or not blocking
     next();
   };
 };
