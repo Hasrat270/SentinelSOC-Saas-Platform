@@ -108,8 +108,8 @@ export default function MetricShowcase() {
                 <Target className="w-4 h-4 text-primary" />
                 Attack Vectors
               </h3>
-              <div className="h-[180px] w-full flex items-center justify-center">
-                <ResponsiveContainer width="100%" height="100%">
+              <div className="h-[180px] w-full relative">
+                <ResponsiveContainer width="99%" height="100%">
                   <PieChart>
                     <Pie
                       data={pieData}

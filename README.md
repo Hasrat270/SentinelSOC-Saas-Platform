@@ -14,9 +14,9 @@ SentinelSOC is a high-performance, multi-tenant SaaS platform designed to protec
 - **Premium Design**: High-contrast "Slate/Indigo" SOC aesthetic.
 
 ## 🏗️ Project Architecture
-This is a **Monorepo** containing:
+The platform is structured with the Next.js application in the root for seamless Vercel deployment:
+- **`src/`**, **`public/`**: Next.js 15+ Core Application (Dashboard & UI).
 - **`backend/`**: Node.js & Express API with MongoDB and Socket.io.
-- **`frontend/`**: Next.js 15+ Dashboard with Shadcn UI & Tailwind CSS.
 - **`sentinel-soc-agent/`**: Distributed security middleware (publishable to npm).
 
 ## 🚀 Quick Start
@@ -28,13 +28,18 @@ cd SentinelSOC-Saas-Platform
 ```
 
 ### 2. Configure Environment
-Create `.env` files in both `backend/` and `frontend/` based on the `.env.example` templates (Clerk Auth, Stripe, and MongoDB required).
+Create `.env.local` in the root and `.env` in `backend/` based on the provided templates (Clerk Auth, Stripe, and MongoDB required).
 
 ### 3. Install & Run
 ```bash
 # In Root
-npm run install:all
+npm install
 npm run dev
+```
+
+### 4. Backend Only
+```bash
+npm run backend:dev
 ```
 
 ## 🛡️ License
