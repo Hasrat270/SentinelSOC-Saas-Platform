@@ -138,20 +138,20 @@ export function SidebarContent() {
       <div className="pt-6 border-t border-border flex items-center gap-3 px-2">
          <button 
            onClick={() => openUserProfile()}
-           className="relative group focus:outline-none overflow-hidden rounded-full"
+           className="relative group focus:outline-none overflow-hidden rounded-lg"
            title="Manage Account"
          >
-           <div className="w-8 h-8 rounded-full overflow-hidden border border-border group-hover:border-primary/50 transition-all duration-300 shadow-sm bg-secondary/20 flex items-center justify-center relative">
+           <div className="w-8 h-8 rounded-lg overflow-hidden border border-border group-hover:border-primary/50 transition-all duration-300 shadow-sm bg-secondary/20 flex items-center justify-center relative">
              {user?.imageUrl ? (
-               <img src={user.imageUrl} alt="Profile" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 rounded-full" />
+               <img src={user.imageUrl} alt="Profile" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
              ) : (
-               <div className="w-full h-full bg-secondary flex items-center justify-center text-[10px] font-bold text-muted-foreground rounded-full">SOC</div>
+               <div className="w-full h-full bg-secondary flex items-center justify-center text-[10px] font-bold text-muted-foreground">SOC</div>
              )}
              
              {/* Flash/Shine Effect */}
-             <div className="absolute top-0 -inset-full h-full w-1/2 z-5 block transform -skew-x-12 bg-gradient-to-r from-transparent via-white/40 to-transparent opacity-0 group-hover:animate-shine pointer-events-none" />
+             <div className="absolute top-0 -inset-full h-full w-1/2 z-5 block transform -skew-x-12 bg-gradient-to-r from-transparent via-white/40 to-transparent opacity-0 group-hover:animate-shine" />
            </div>
-           <div className="absolute inset-0 rounded-full bg-primary/10 opacity-0 group-hover:opacity-100 transition-opacity" />
+           <div className="absolute inset-0 rounded-lg bg-primary/10 opacity-0 group-hover:opacity-100 transition-opacity" />
          </button>
 
          <button 
