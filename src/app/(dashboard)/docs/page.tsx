@@ -129,34 +129,34 @@ app.use(sentinelAgent({
                    </button>
                 </div>
 
-                <div className="p-8 font-mono text-sm relative leading-relaxed bg-card/20">
+                <div className="p-8 font-mono text-sm relative leading-relaxed bg-[#020617] text-slate-300">
                    <div className="space-y-1.5 overflow-x-auto text-[13px]">
                       <div className="flex gap-8">
-                         <span className="text-muted-foreground/30 w-6 text-right select-none font-bold">1</span>
-                         <span className="whitespace-nowrap"><span className="text-primary font-bold">import</span> &#123; <span className="text-foreground">sentinelAgent</span> &#125; <span className="text-primary font-bold">from</span> <span className="text-primary">'sentinel-soc-agent'</span>;</span>
+                         <span className="text-slate-600/50 w-6 text-right select-none font-bold">1</span>
+                         <span className="whitespace-nowrap"><span className="text-purple-400">import</span> &#123; <span className="text-amber-400">sentinelAgent</span> &#125; <span className="text-purple-400">from</span> <span className="text-emerald-400">'sentinel-soc-agent'</span>;</span>
                       </div>
                       <div className="flex gap-8">
-                         <span className="text-muted-foreground/30 w-6 text-right select-none font-bold">2</span>
-                         <span className="text-muted-foreground italic opacity-50">// Initialize defense engine</span>
+                         <span className="text-slate-600/50 w-6 text-right select-none font-bold">2</span>
+                         <span className="text-slate-500 italic opacity-50 font-medium">// Initialize defense engine</span>
                       </div>
                       <div className="flex gap-8">
-                         <span className="text-muted-foreground/30 w-6 text-right select-none font-bold">3</span>
-                         <span className="whitespace-nowrap"><span className="text-foreground">app</span>.<span className="text-primary">use</span>(<span className="text-primary">sentinelAgent</span>(&#123;</span>
+                         <span className="text-slate-600/50 w-6 text-right select-none font-bold">3</span>
+                         <span className="whitespace-nowrap"><span className="text-foreground">app</span>.<span className="text-amber-400">use</span>(<span className="text-amber-400">sentinelAgent</span>(&#123;</span>
                       </div>
                       <div className="flex gap-8">
-                         <span className="text-muted-foreground/30 w-6 text-right select-none font-bold">4</span>
-                         <span className="ml-8 whitespace-nowrap"><span className="text-foreground">apiKey</span>: <span className="text-primary font-bold">"{apiKey}"</span>,</span>
+                         <span className="text-slate-600/50 w-6 text-right select-none font-bold">4</span>
+                         <span className="ml-8 whitespace-nowrap"><span className="text-foreground">apiKey</span>: <span className="text-emerald-400">"{apiKey}"</span>,</span>
                       </div>
                       <div className="flex gap-8">
-                         <span className="text-muted-foreground/30 w-6 text-right select-none font-bold">5</span>
-                         <span className="ml-8 whitespace-nowrap"><span className="text-foreground">endpoint</span>: <span className="text-primary font-bold">"{endpoint}"</span>,</span>
+                         <span className="text-slate-600/50 w-6 text-right select-none font-bold">5</span>
+                         <span className="ml-8 whitespace-nowrap"><span className="text-foreground">endpoint</span>: <span className="text-emerald-400">"{endpoint}"</span>,</span>
                       </div>
                       <div className="flex gap-8">
-                         <span className="text-muted-foreground/30 w-6 text-right select-none font-bold">6</span>
-                         <span className="ml-8 whitespace-nowrap"><span className="text-foreground font-bold">block</span>: <span className="text-primary font-bold">true </span> <span className="text-muted-foreground/50 italic capitalize ml-3">// Enables automatic redirection</span></span>
+                         <span className="text-slate-600/50 w-6 text-right select-none font-bold">6</span>
+                         <span className="ml-8 whitespace-nowrap"><span className="text-foreground">block</span>: <span className="text-amber-400">true </span> <span className="text-slate-500 italic ml-3">// Enables automatic redirection</span></span>
                       </div>
                       <div className="flex gap-8">
-                         <span className="text-muted-foreground/30 w-6 text-right select-none font-bold">7</span>
+                         <span className="text-slate-600/50 w-6 text-right select-none font-bold">7</span>
                          <span className="whitespace-nowrap">&#125;));</span>
                       </div>
                    </div>
