@@ -29,8 +29,7 @@ const THREAT_PATTERNS = {
 };
 
 const sentinelAgent = (config) => {
-  // Use production Render URL by default if not provided
-  const endpoint = config.endpoint || 'https://sentinel-soc-backend.onrender.com/api/v1/logs';
+  const endpoint = config.endpoint || 'https://sentinelsoc-backend.onrender.com/api/v1/logs';
   const apiKey = config.apiKey;
   const shouldBlockLocally = config.block !== undefined ? config.block : true;
 
