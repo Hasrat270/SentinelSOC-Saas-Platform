@@ -138,10 +138,8 @@ export default function Sidebar() {
       </div>
 
       {/* Simplified User Section */}
-      <div className="pt-6 border-t border-border flex items-center gap-2">
-        <div className="p-1 rounded-lg border border-border bg-secondary/20 shadow-sm">
-           <UserButton appearance={{ elements: { userButtonAvatarBox: "w-7 h-7" } }} />
-        </div>
+      <div className="pt-6 border-t border-border flex items-center gap-3">
+        <UserButton appearance={{ elements: { userButtonAvatarBox: "w-8 h-8 rounded-lg" } }} />
 
         <button 
           onClick={handleLogout}
