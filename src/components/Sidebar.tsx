@@ -16,6 +16,7 @@ import {
   Loader2,
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { UserAvatar } from "./UserProfile";
 
 const navLinks = [
   { href: "/dashboard", label: "Overview", icon: LayoutDashboard },
@@ -136,27 +137,9 @@ export function SidebarContent() {
 
       {/* User Section */}
       <div className="pt-6 border-t border-border flex items-center gap-4 px-2">
-         <div className="relative group shrink-0">
-            <button 
-              onClick={() => openUserProfile()}
-              className="relative w-9 h-9 rounded-full overflow-hidden border border-border bg-secondary/20 flex items-center justify-center transition-all duration-300 shadow-sm"
-              title="Manage Account"
-            >
-              {user?.imageUrl ? (
-                <img src={user.imageUrl} alt="Profile" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
-              ) : (
-                <div className="w-full h-full bg-secondary flex items-center justify-center text-[10px] font-bold text-muted-foreground">SOC</div>
-              )}
-              
-              {/* Flash/Shine Effect */}
-              <div className="absolute top-0 -inset-full h-full w-1/2 z-10 block transform -skew-x-12 bg-gradient-to-r from-transparent via-white/40 to-transparent opacity-0 group-hover:animate-shine pointer-events-none" />
-            </button>
-            
-            {/* Status Badge - Digital Identity Style */}
-            <div className="absolute -bottom-0.5 -right-0.5 p-1 bg-primary rounded-full border-2 border-background shadow-lg z-20 scale-90 group-hover:scale-110 transition-transform duration-300">
-               <Shield className="w-2.5 h-2.5 text-white" />
-            </div>
-         </div>
+         <button onClick={() => openUserProfile()} className="group/avatar">
+            <UserAvatar />
+         </button>
 
          <button 
            onClick={handleLogout}
