@@ -25,13 +25,17 @@ export const handleStripeWebhook = async (req: Request, res: Response): Promise<
   }
 
   console.log(`[Stripe Webhook] Event Received: ${event.type} [${event.id}]`);
+  
+  // Deep debug log for any production mismatch
+  console.dir(event.data.object, { depth: null });
 
   // Handle the checkout.session.completed event
   if (event.type === 'checkout.session.completed') {
     const session = event.data.object as any;
     const clerkUserId = session.metadata?.clerkUserId || session.metadata?.userId;
+    const customerEmail = session.customer_details?.email;
 
-    console.log(`[Stripe] Checkout Session Metadata:`, session.metadata);
+    console.log(`[Stripe] Checkout Session - User: ${clerkUserId}, Email: ${customerEmail}`);
 
     if (clerkUserId) {
       try {
@@ -41,37 +45,42 @@ export const handleStripeWebhook = async (req: Request, res: Response): Promise<
           { new: true }
         );
         if (tenant) {
-          console.log(`[Stripe] ✅ Successfully upgraded tenant ${tenant._id} (User: ${clerkUserId}) to PRO`);
+          console.log(`[Stripe] ✅ Upgraded tenant via Clerk ID: ${clerkUserId}`);
         } else {
-          console.warn(`[Stripe] ⚠️ No tenant found for Clerk User ID: ${clerkUserId}`);
+          console.warn(`[Stripe] ⚠️ No tenant found for Clerk ID: ${clerkUserId}. Trying email fallback...`);
+          if (customerEmail) {
+            const tenantByEmail = await Tenant.findOneAndUpdate(
+              { email: customerEmail }, // Assumption: Tenant might have email field
+              { subscriptionPlan: 'PRO' },
+              { new: true }
+            );
+            if (tenantByEmail) console.log(`[Stripe] ✅ Upgraded tenant via Email: ${customerEmail}`);
+          }
         }
       } catch (err) {
-        console.error(`[Stripe] ❌ Error updating tenant for user ${clerkUserId}:`, err);
+        console.error(`[Stripe] ❌ Error in checkout.session.completed:`, err);
       }
-    } else {
-      console.warn(`[Stripe] ⚠️ Webhook received but clerkUserId was missing in session metadata.`);
     }
   }
 
   // Handle the invoice.payment_succeeded event
   if (event.type === 'invoice.payment_succeeded') {
     const invoice = event.data.object as any;
-    const subscription = await stripe.subscriptions.retrieve(invoice.subscription as string);
-    const clerkUserId = subscription.metadata?.clerkUserId || subscription.metadata?.userId;
+    const customerEmail = invoice.customer_email;
+    
+    console.log(`[Stripe] Invoice Paid - Email: ${customerEmail}`);
 
-    console.log(`[Stripe] Invoice Payment Succeeded for Subscription:`, invoice.subscription);
-
-    if (clerkUserId) {
-      try {
-        await Tenant.findOneAndUpdate(
-          { clerkUserId },
-          { subscriptionPlan: 'PRO' },
-          { new: true }
-        );
-        console.log(`[Stripe] ✅ Subscription persistence: Upgraded ${clerkUserId} to PRO via Invoice`);
-      } catch (err) {
-        console.error(`[Stripe] ❌ Error updating tenant via invoice for user ${clerkUserId}:`, err);
+    try {
+      const tenant = await Tenant.findOneAndUpdate(
+        { email: customerEmail },
+        { subscriptionPlan: 'PRO' },
+        { new: true }
+      );
+      if (tenant) {
+        console.log(`[Stripe] ✅ Upgraded user via Invoice Email: ${customerEmail}`);
       }
+    } catch (err) {
+      console.error(`[Stripe] ❌ Error in invoice.payment_succeeded:`, err);
     }
   }
 

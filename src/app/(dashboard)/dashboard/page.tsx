@@ -105,20 +105,31 @@ function DashboardContent() {
     fetchData();
   }, [fetchData]);
 
-  // Handle Subscription Success Redirect
+  // Handle Subscription Success Redirect with Auto-Retry
   useEffect(() => {
     if (searchParams.get("success") === "true") {
       toast.success("Subscription Activated!", {
-        description: "Your account has been upgraded to PRO. Real-time protection is now active.",
+        description: "Updating your account status... Please wait a moment.",
+        duration: 10000,
       });
       
-      const timer = setTimeout(() => {
-        fetchData();
-        const params = new URLSearchParams(searchParams.toString());
-        params.delete("success");
-        router.replace(`${pathname}?${params.toString()}`);
-      }, 3000);
-      return () => clearTimeout(timer);
+      let attempts = 0;
+      const maxAttempts = 3;
+      
+      const retryFetch = async () => {
+        await fetchData();
+        attempts++;
+        if (attempts < maxAttempts) {
+          setTimeout(retryFetch, 3000);
+        } else {
+          // Clear the success param after all retries
+          const params = new URLSearchParams(searchParams.toString());
+          params.delete("success");
+          router.replace(`${pathname}?${params.toString()}`);
+        }
+      };
+
+      retryFetch();
     }
   }, [searchParams]);
 
