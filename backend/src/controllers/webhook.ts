@@ -24,10 +24,42 @@ export const handleStripeWebhook = async (req: Request, res: Response): Promise<
     return;
   }
 
+  console.log(`[Stripe Webhook] Event Received: ${event.type} [${event.id}]`);
+
   // Handle the checkout.session.completed event
   if (event.type === 'checkout.session.completed') {
     const session = event.data.object as any;
-    const clerkUserId = session.metadata.clerkUserId;
+    const clerkUserId = session.metadata?.clerkUserId || session.metadata?.userId;
+
+    console.log(`[Stripe] Checkout Session Metadata:`, session.metadata);
+
+    if (clerkUserId) {
+      try {
+        const tenant = await Tenant.findOneAndUpdate(
+          { clerkUserId },
+          { subscriptionPlan: 'PRO' },
+          { new: true }
+        );
+        if (tenant) {
+          console.log(`[Stripe] ✅ Successfully upgraded tenant ${tenant._id} (User: ${clerkUserId}) to PRO`);
+        } else {
+          console.warn(`[Stripe] ⚠️ No tenant found for Clerk User ID: ${clerkUserId}`);
+        }
+      } catch (err) {
+        console.error(`[Stripe] ❌ Error updating tenant for user ${clerkUserId}:`, err);
+      }
+    } else {
+      console.warn(`[Stripe] ⚠️ Webhook received but clerkUserId was missing in session metadata.`);
+    }
+  }
+
+  // Handle the invoice.payment_succeeded event
+  if (event.type === 'invoice.payment_succeeded') {
+    const invoice = event.data.object as any;
+    const subscription = await stripe.subscriptions.retrieve(invoice.subscription as string);
+    const clerkUserId = subscription.metadata?.clerkUserId || subscription.metadata?.userId;
+
+    console.log(`[Stripe] Invoice Payment Succeeded for Subscription:`, invoice.subscription);
 
     if (clerkUserId) {
       try {
@@ -36,9 +68,9 @@ export const handleStripeWebhook = async (req: Request, res: Response): Promise<
           { subscriptionPlan: 'PRO' },
           { new: true }
         );
-        console.log(`[Stripe] Successfully upgraded user ${clerkUserId} to Pro`);
+        console.log(`[Stripe] ✅ Subscription persistence: Upgraded ${clerkUserId} to PRO via Invoice`);
       } catch (err) {
-        console.error(`Error updating tenant for user ${clerkUserId}:`, err);
+        console.error(`[Stripe] ❌ Error updating tenant via invoice for user ${clerkUserId}:`, err);
       }
     }
   }

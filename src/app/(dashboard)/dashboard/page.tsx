@@ -3,7 +3,8 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
 import { useAuth } from "@clerk/nextjs";
-import { ShieldAlert, Zap } from "lucide-react";
+import { useSearchParams, useRouter, usePathname } from "next/navigation";
+import { ShieldAlert, Zap, CheckCircle2 } from "lucide-react";
 import { useSocket } from "@/hooks/useSocket";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
@@ -39,6 +40,10 @@ interface TenantProfile {
 
 export default function OverviewPage() {
   const { getToken } = useAuth();
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+  const router = useRouter();
+
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [profile, setProfile] = useState<TenantProfile | null>(null);
   const [loading, setLoading] = useState(true);
@@ -47,56 +52,73 @@ export default function OverviewPage() {
 
   const { socket, isConnected } = useSocket(profile?.tenantId);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
+  const fetchData = React.useCallback(async () => {
+    const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
+    
+    if (!backendUrl) {
+      console.error("NEXT_PUBLIC_BACKEND_URL is not defined in environment variables");
+      toast.error("Configuration Error", {
+        description: "Backend URL is missing. Please check your environment variables."
+      });
+      setLoading(false);
+      return;
+    }
+
+    try {
+      const token = await getToken();
+      const headers = { Authorization: `Bearer ${token}` };
+
+      console.log(`[Dashboard] Fetching data from ${backendUrl}`);
       
-      if (!backendUrl) {
-        console.error("NEXT_PUBLIC_BACKEND_URL is not defined in environment variables");
-        toast.error("Configuration Error", {
-          description: "Backend URL is missing. Please check your environment variables."
-        });
-        setLoading(false);
-        return;
+      const [profileRes, statsRes] = await Promise.all([
+        fetch(`${backendUrl}/tenant/me`, { headers }),
+        fetch(`${backendUrl}/dashboard-stats`, { headers })
+      ]);
+
+      if (profileRes.ok) {
+        const profileData = await profileRes.json();
+        setProfile(profileData);
+        console.log("[Dashboard] Profile loaded:", profileData.tenantId);
+      } else {
+        console.error("[Dashboard] Profile fetch failed:", profileRes.status);
+        if (profileRes.status === 401) toast.error("Session expired. Please sign in again.");
+        else toast.error("Failed to load tenant profile");
       }
 
-      try {
-        const token = await getToken();
-        const headers = { Authorization: `Bearer ${token}` };
-
-        console.log(`[Dashboard] Fetching data from ${backendUrl}`);
-        
-        const [profileRes, statsRes] = await Promise.all([
-          fetch(`${backendUrl}/tenant/me`, { headers }),
-          fetch(`${backendUrl}/dashboard-stats`, { headers })
-        ]);
-
-        if (profileRes.ok) {
-          const profileData = await profileRes.json();
-          setProfile(profileData);
-          console.log("[Dashboard] Profile loaded:", profileData.tenantId);
-        } else {
-          console.error("[Dashboard] Profile fetch failed:", profileRes.status);
-          if (profileRes.status === 401) toast.error("Session expired. Please sign in again.");
-          else toast.error("Failed to load tenant profile");
-        }
-
-        if (statsRes.ok) {
-          setStats(await statsRes.json());
-        }
-
-      } catch (err) {
-        console.error("[Dashboard] Failed to fetch data", err);
-        toast.error("Connection Error", {
-          description: "Could not reach the security engine. Please try again later."
-        });
-      } finally {
-        setLoading(false);
+      if (statsRes.ok) {
+        setStats(await statsRes.json());
       }
-    };
 
-    fetchData();
+    } catch (err) {
+      console.error("[Dashboard] Failed to fetch data", err);
+      toast.error("Connection Error", {
+        description: "Could not reach the security engine. Please try again later."
+      });
+    } finally {
+      setLoading(false);
+    }
   }, [getToken]);
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
+
+  // Handle Subscription Success Redirect
+  useEffect(() => {
+    if (searchParams.get("success") === "true") {
+      toast.success("Subscription Activated!", {
+        description: "Your account has been upgraded to PRO. Real-time protection is now active.",
+      });
+      
+      const timer = setTimeout(() => {
+        fetchData();
+        const params = new URLSearchParams(searchParams.toString());
+        params.delete("success");
+        router.replace(`${pathname}?${params.toString()}`);
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [searchParams]);
 
   useEffect(() => {
     if (!socket) return;
