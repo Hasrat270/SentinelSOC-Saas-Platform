@@ -238,6 +238,39 @@ function DashboardContent() {
   };
 
 
+  const handleUpgrade = React.useCallback(async () => {
+    try {
+      const token = await getToken();
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/subscription/create-portal`, {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      const data = await res.json();
+      if (res.ok && data.url) {
+        window.location.href = data.url;
+      } else {
+        toast({ title: data.error || "Failed to initiate checkout", variant: "destructive" });
+      }
+    } catch (err) {
+      console.error(err);
+      toast({ title: "Network error. Please try again.", variant: "destructive" });
+    }
+  }, [getToken, toast]);
+
+  // Handle auto-upgrade from Landing Page
+  useEffect(() => {
+    if (searchParams.get("upgrade") === "true" && profile && !loading) {
+      if (profile.subscriptionPlan === 'FREE') {
+        handleUpgrade();
+      }
+      // Clean up the URL
+      const params = new URLSearchParams(searchParams.toString());
+      params.delete("upgrade");
+      router.replace(`${pathname}?${params.toString()}`);
+    }
+  }, [searchParams, profile, loading, handleUpgrade, router, pathname]);
+
+
   const isLimitReached = profile?.subscriptionPlan === 'FREE' && (profile?.logCount ?? 0) >= 500;
 
   return (
@@ -259,24 +292,7 @@ function DashboardContent() {
         
         {profile?.subscriptionPlan === 'FREE' && (
            <button 
-             onClick={async () => {
-               try {
-                 const token = await getToken();
-                 const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/subscription/create-portal`, {
-                   method: 'POST',
-                   headers: { Authorization: `Bearer ${token}` }
-                 });
-                 const data = await res.json();
-                 if (res.ok && data.url) {
-                   window.location.href = data.url;
-                 } else {
-                   toast({ title: data.error || "Failed to initiate checkout", variant: "destructive" });
-                 }
-               } catch (err) {
-                 console.error(err);
-                 toast({ title: "Network error. Please try again.", variant: "destructive" });
-               }
-             }}
+             onClick={handleUpgrade}
              className={cn(
                "px-3 py-1.5 md:px-5 md:py-2.5 text-white text-[9px] md:text-[10px] font-bold rounded-lg transition-all shadow-lg flex items-center gap-2 group uppercase tracking-widest cursor-pointer whitespace-nowrap",
                isLimitReached 

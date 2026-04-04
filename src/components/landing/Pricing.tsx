@@ -2,9 +2,13 @@
 
 import { Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { SignInButton, SignUpButton } from "@clerk/nextjs";
+import { SignInButton, SignUpButton, useAuth } from "@clerk/nextjs";
+import { useRouter } from "next/navigation";
 
 export default function Pricing() {
+  const { isSignedIn } = useAuth();
+  const router = useRouter();
+
   return (
     <section id="pricing" className="py-24 bg-secondary/20 relative">
       <div className="container mx-auto px-6">
@@ -42,7 +46,7 @@ export default function Pricing() {
                 <span>Email Alerts (Weekly)</span>
               </div>
             </div>
-            <SignInButton mode="modal">
+            <SignInButton mode="modal" forceRedirectUrl="/dashboard">
               <Button variant="outline" className="w-full h-12 text-base">
                 Get Started Free
               </Button>
@@ -87,11 +91,20 @@ export default function Pricing() {
                 <span>24/7 Dedicated Slack Support</span>
               </div>
             </div>
-            <SignUpButton mode="modal">
-              <Button className="w-full h-12 text-base bg-primary hover:bg-primary/90">
+            {isSignedIn ? (
+              <Button 
+                onClick={() => router.push("/dashboard?upgrade=true")}
+                className="w-full h-12 text-base bg-primary hover:bg-primary/90"
+              >
                 Upgrade to Pro
               </Button>
-            </SignUpButton>
+            ) : (
+              <SignUpButton mode="modal" forceRedirectUrl="/dashboard?upgrade=true">
+                <Button className="w-full h-12 text-base bg-primary hover:bg-primary/90">
+                  Upgrade to Pro
+                </Button>
+              </SignUpButton>
+            )}
           </div>
         </div>
       </div>
