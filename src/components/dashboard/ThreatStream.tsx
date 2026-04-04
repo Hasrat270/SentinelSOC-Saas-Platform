@@ -36,7 +36,7 @@ export function ThreatStream({ threats, loading, isLimitReached }: ThreatStreamP
           </span>
         </div>
       </CardHeader>
-      <div className="overflow-x-auto">
+      <div className="w-full overflow-x-auto custom-scrollbar">
         <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-border text-muted-foreground bg-secondary/30">

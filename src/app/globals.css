@@ -102,7 +102,7 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground antialiased selection:bg-primary/20 selection:text-primary-foreground;
+    @apply bg-background text-foreground antialiased selection:bg-primary/20 selection:text-primary-foreground overflow-x-hidden;
   }
 }
 
@@ -207,6 +207,29 @@ html body [data-sonner-toast] {
   font-size: 0.75rem !important;
   border-radius: 8px !important;
   padding: 8px 12px !important;
+}
+
+
+/* Dashboard Animations */
+@keyframes shine {
+  0% { left: -100%; opacity: 0; }
+  20% { opacity: 1; }
+  100% { left: 100%; opacity: 0; }
+}
+
+.animate-shine {
+  animation: shine 1.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+/* Mobile Responsiveness & Layout Fixes */
+@layer utilities {
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 4px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 10px;
+  }
 }
 
 /* Mobile Optimizations */

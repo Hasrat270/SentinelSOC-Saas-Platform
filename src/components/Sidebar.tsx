@@ -30,9 +30,9 @@ interface TenantProfile {
   logCount: number;
 }
 
-export default function Sidebar() {
+export function SidebarContent() {
   const { signOut, openUserProfile } = useClerk();
-  const { user } = useUser();
+  const { user } = userUser();
   const { getToken } = useAuth();
   const { toast } = useToast();
   const pathname = usePathname();
@@ -69,15 +69,17 @@ export default function Sidebar() {
   };
 
   return (
-    <aside className="sticky top-0 h-screen w-64 bg-card border-r border-border px-4 py-8 flex flex-col shrink-0 transition-colors duration-500">
+    <>
       {/* Logo */}
-      <div className="flex items-center gap-3 mb-10 px-2">
-        <div className="flex items-center justify-center w-9 h-9 rounded-lg bg-primary shadow-lg shadow-primary/20">
-          <Shield className="w-5 h-5 text-white" />
+      <div className="flex items-center gap-3 mb-10 px-2 lg:block">
+        <div className="flex items-center gap-3">
+          <div className="flex items-center justify-center w-9 h-9 rounded-lg bg-primary shadow-lg shadow-primary/20">
+            <Shield className="w-5 h-5 text-white" />
+          </div>
+          <span className="text-xl font-bold tracking-tight text-foreground whitespace-nowrap">
+            Sentinel<span className="text-primary">SOC</span>
+          </span>
         </div>
-        <span className="text-xl font-bold tracking-tight text-foreground whitespace-nowrap">
-          Sentinel<span className="text-primary">SOC</span>
-        </span>
       </div>
 
       {/* Navigation */}
@@ -132,19 +134,22 @@ export default function Sidebar() {
           </div>
       </div>
 
-      {/* User Section - Direct Profile Access (No Dropdown) */}
+      {/* User Section */}
       <div className="pt-6 border-t border-border flex items-center gap-3 px-2">
          <button 
            onClick={() => openUserProfile()}
-           className="relative group focus:outline-none"
+           className="relative group focus:outline-none overflow-hidden rounded-lg"
            title="Manage Account"
          >
-           <div className="w-8 h-8 rounded-lg overflow-hidden border border-border hover:border-primary/50 transition-all duration-300 shadow-sm bg-secondary/20 flex items-center justify-center">
+           <div className="w-8 h-8 rounded-lg overflow-hidden border border-border group-hover:border-primary/50 transition-all duration-300 shadow-sm bg-secondary/20 flex items-center justify-center relative">
              {user?.imageUrl ? (
                <img src={user.imageUrl} alt="Profile" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
              ) : (
                <div className="w-full h-full bg-secondary flex items-center justify-center text-[10px] font-bold text-muted-foreground">SOC</div>
              )}
+             
+             {/* Flash/Shine Effect */}
+             <div className="absolute top-0 -inset-full h-full w-1/2 z-5 block transform -skew-x-12 bg-gradient-to-r from-transparent via-white/40 to-transparent opacity-0 group-hover:animate-shine" />
            </div>
            <div className="absolute inset-0 rounded-lg bg-primary/10 opacity-0 group-hover:opacity-100 transition-opacity" />
          </button>
@@ -158,6 +163,19 @@ export default function Sidebar() {
             <span className="text-[10px] font-bold uppercase tracking-widest leading-none">Logout</span>
          </button>
       </div>
+    </>
+  );
+}
+
+function userUser() {
+    const { user } = useUser();
+    return { user };
+}
+
+export default function Sidebar() {
+  return (
+    <aside className="hidden lg:flex sticky top-0 h-screen w-64 bg-card border-r border-border px-4 py-8 flex-col shrink-0 transition-colors duration-500">
+      <SidebarContent />
     </aside>
   );
 }

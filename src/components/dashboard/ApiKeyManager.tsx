@@ -65,20 +65,20 @@ export function ApiKeyManager({
   return (
     <>
       <Card className="bg-card border-border shadow-sm overflow-hidden animate-in fade-in duration-500">
-        <CardHeader className="border-b border-border/50 pb-6 flex flex-row items-center justify-between">
+        <CardHeader className="border-b border-border/50 pb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <div className="p-2 rounded-lg bg-primary/10 border border-primary/20">
+            <div className="p-2 rounded-lg bg-primary/10 border border-primary/20 shrink-0">
               <Key className="w-4.5 h-4.5 text-primary" />
             </div>
             <div>
-              <CardTitle className="text-foreground text-[11px] font-bold uppercase tracking-widest">API access keys</CardTitle>
-              <p className="text-[10px] text-muted-foreground mt-0.5 uppercase tracking-tight">Manage persistent keys for your security agents</p>
+              <CardTitle className="text-foreground text-[11px] font-bold uppercase tracking-widest whitespace-nowrap">API access keys</CardTitle>
+              <p className="text-[10px] text-muted-foreground mt-0.5 uppercase tracking-tight">Manage persistent keys</p>
             </div>
           </div>
-          <form onSubmit={handleCreateKey} className="flex items-center gap-2">
+          <form onSubmit={handleCreateKey} className="flex items-center gap-2 w-full sm:w-auto">
               <Input 
-                placeholder="Key label (e.g. Production)" 
-                className="h-8 text-[10px] bg-secondary/50 border-border w-44 font-medium uppercase tracking-tight"
+                placeholder="Key label" 
+                className="h-8 text-[10px] bg-secondary/50 border-border flex-1 sm:w-44 font-medium uppercase tracking-tight"
                 value={newKeyName}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setNewKeyName(e.target.value)}
               />
