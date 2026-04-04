@@ -19,17 +19,25 @@ export const createPortalSession = async (req: Request, res: Response): Promise<
       return;
     }
 
+    const priceId = process.env.STRIPE_PRICE_ID;
+    if (!priceId) {
+      res.status(500).json({ error: 'STRIPE_PRICE_ID is not configured on the server' });
+      return;
+    }
+
+    const clientUrl = process.env.CLIENT_URL || 'http://localhost:3000';
+
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
       line_items: [
         {
-          price: 'price_1THohh1P0Fl04GJ5jG3mzeUN',
+          price: priceId,
           quantity: 1,
         },
       ],
       mode: 'subscription',
-      success_url: `${process.env.CLIENT_URL}/dashboard?success=true`,
-      cancel_url: `${process.env.CLIENT_URL}/dashboard?canceled=true`,
+      success_url: `${clientUrl}/dashboard?success=true`,
+      cancel_url: `${clientUrl}/dashboard?canceled=true`,
       metadata: {
         clerkUserId,
       },
@@ -37,8 +45,7 @@ export const createPortalSession = async (req: Request, res: Response): Promise<
 
     res.json({ url: session.url });
   } catch (error: any) {
-    console.log("Stripe Error:", error);
-    console.error('Error creating checkout session:', error);
+    console.error('Stripe Error:', error);
     res.status(500).json({ error: error.message || 'Internal server error' });
   }
 };

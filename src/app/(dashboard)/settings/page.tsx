@@ -55,14 +55,15 @@ export default function SettingsPage() {
         method: "POST",
         headers: { Authorization: `Bearer ${token}` },
       });
-      if (res.ok) {
-        const { url } = await res.json();
-        window.location.href = url;
+      const data = await res.json();
+      if (res.ok && data.url) {
+        window.location.href = data.url;
       } else {
-        toast.error("Failed to initiate checkout");
+        toast.error(data.error || "Failed to initiate checkout");
       }
-    } catch {
-      toast.error("Something went wrong");
+    } catch (err) {
+      console.error(err);
+      toast.error("Network error. Please try again.");
     } finally {
       setUpgrading(false);
     }
@@ -98,7 +99,7 @@ export default function SettingsPage() {
                 </span>
               ) : (
                 <span className="bg-secondary text-muted-foreground text-[10px] uppercase tracking-widest font-bold px-2 py-0.5 rounded border border-border">
-                  Standard Free
+                  Standard FREE
                 </span>
               )}
             </div>
@@ -106,7 +107,7 @@ export default function SettingsPage() {
           <CardContent className="pt-6 space-y-6 flex-1">
             <div className="space-y-1">
               <p className="text-sm font-bold text-foreground">
-                {subscriptionPlan === "PRO" ? "Sentinel Enterprise Fleet" : "Sentinel Standard Instance"}
+                {subscriptionPlan === "PRO" ? "Sentinel Enterprise PRO" : "Sentinel Standard Instance"}
               </p>
               <p className="text-xs text-muted-foreground italic leading-relaxed">
                 {subscriptionPlan === "PRO" 
@@ -138,7 +139,7 @@ export default function SettingsPage() {
                 disabled={upgrading || loading}
                 className="w-full bg-primary hover:bg-primary/90 text-white font-bold text-[11px] uppercase tracking-widest h-10 transition-all shadow-lg shadow-primary/20"
               >
-                {upgrading ? "Provisioning..." : "Upgrade to Enterprise"}
+                {upgrading ? "Provisioning..." : "Upgrade to PRO"}
               </Button>
             )}
           </CardFooter>

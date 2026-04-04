@@ -203,28 +203,35 @@ export default function OverviewPage() {
         </div>
         
         {profile?.subscriptionPlan === 'FREE' && (
-          <button 
-            onClick={async () => {
-              const token = await getToken();
-              const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/subscription/create-portal`, {
-                method: 'POST',
-                headers: { Authorization: `Bearer ${token}` }
-              });
-              if (res.ok) {
-                const { url } = await res.json();
-                window.location.href = url;
-              }
-            }}
-            className={cn(
-              "px-5 py-2.5 text-white text-[10px] font-bold rounded-lg transition-all shadow-lg flex items-center gap-2 group uppercase tracking-widest cursor-pointer",
-              isLimitReached 
-                ? "bg-red-600 animate-pulse shadow-red-500/20" 
-                : "bg-primary hover:bg-primary/90 shadow-primary/20"
-            )}
-          >
-            <Zap className="w-3.5 h-3.5 group-hover:fill-current transition-all" />
-            Upgrade to PRO
-          </button>
+           <button 
+             onClick={async () => {
+               try {
+                 const token = await getToken();
+                 const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/subscription/create-portal`, {
+                   method: 'POST',
+                   headers: { Authorization: `Bearer ${token}` }
+                 });
+                 const data = await res.json();
+                 if (res.ok && data.url) {
+                   window.location.href = data.url;
+                 } else {
+                   toast.error(data.error || "Failed to initiate checkout");
+                 }
+               } catch (err) {
+                 console.error(err);
+                 toast.error("Network error. Please try again.");
+               }
+             }}
+             className={cn(
+               "px-5 py-2.5 text-white text-[10px] font-bold rounded-lg transition-all shadow-lg flex items-center gap-2 group uppercase tracking-widest cursor-pointer",
+               isLimitReached 
+                 ? "bg-red-600 animate-pulse shadow-red-500/20" 
+                 : "bg-primary hover:bg-primary/90 shadow-primary/20"
+             )}
+           >
+             <Zap className="w-3.5 h-3.5 group-hover:fill-current transition-all" />
+             Upgrade to PRO
+           </button>
         )}
       </div>
 
