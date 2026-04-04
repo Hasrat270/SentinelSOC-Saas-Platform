@@ -199,22 +199,22 @@ app.use(sentinelAgent({
           </div>
        </div>
 
-       {/* Final Guidance */}
-       <div className="bg-primary/10 border border-primary/30 p-8 rounded-3xl relative overflow-hidden group">
-          <div className="absolute top-0 right-0 w-32 h-32 bg-primary/20 blur-[80px] -mr-16 -mt-16 group-hover:bg-primary/40 transition-all duration-1000" />
-          <div className="flex gap-8 items-start relative z-10">
-             <div className="p-4 rounded-2xl bg-primary/20 border border-primary/30 shadow-2xl">
-                <ShieldCheck className="w-8 h-8 text-primary shadow-primary/50" />
-             </div>
-             <div className="space-y-2">
-                <p className="text-sm font-black text-foreground uppercase tracking-widest leading-none">Developer Best Practice</p>
-                <p className="text-xs text-muted-foreground mt-3 leading-loose max-w-2xl font-medium">
-                   For maximum security, never hardcode your <code className="bg-primary/20 px-2 py-0.5 rounded-md text-primary font-mono font-bold tracking-normal">apiKey</code> in production code. 
-                   We strongly recommend using environment variables (e.g., <code className="bg-primary/20 px-2 py-0.5 rounded-md text-primary font-mono font-bold">process.env.SENTINEL_API_KEY</code>) to manage your credentials safely.
-                </p>
-             </div>
-          </div>
-       </div>
+        {/* Final Guidance */}
+        <div className="bg-primary/10 border border-primary/30 p-6 md:p-8 rounded-3xl relative overflow-hidden group">
+           <div className="absolute top-0 right-0 w-32 h-32 bg-primary/20 blur-[80px] -mr-16 -mt-16 group-hover:bg-primary/40 transition-all duration-1000" />
+           <div className="flex flex-col md:flex-row gap-6 md:gap-8 items-center md:items-start relative z-10">
+              <div className="p-4 rounded-2xl bg-primary/20 border border-primary/30 shadow-2xl shrink-0">
+                 <ShieldCheck className="w-8 h-8 text-primary shadow-primary/50" />
+              </div>
+              <div className="space-y-2 text-center md:text-left">
+                 <p className="text-sm font-black text-foreground uppercase tracking-widest leading-none">Developer Best Practice</p>
+                 <p className="text-xs text-muted-foreground mt-3 leading-loose max-w-2xl font-medium">
+                    For maximum security, never hardcode your <code className="bg-primary/20 px-2 py-0.5 rounded-md text-primary font-mono font-bold tracking-normal break-all">apiKey</code> in production code. 
+                    We strongly recommend using environment variables (e.g., <code className="bg-primary/20 px-2 py-0.5 rounded-md text-primary font-mono font-bold break-all">process.env.SENTINEL_API_KEY</code>) to manage your credentials safely.
+                 </p>
+              </div>
+           </div>
+        </div>
     </div>
   );
 }
