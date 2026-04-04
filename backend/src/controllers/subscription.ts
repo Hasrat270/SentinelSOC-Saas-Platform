@@ -26,6 +26,9 @@ export const createPortalSession = async (req: Request, res: Response): Promise<
     }
 
     const clientUrl = process.env.CLIENT_URL || 'http://localhost:3000';
+    if (!process.env.CLIENT_URL && process.env.NODE_ENV === 'production') {
+      console.warn('WARNING: CLIENT_URL environment variable is not set. Defaulting to localhost in production.');
+    }
 
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],

@@ -290,7 +290,7 @@ function DashboardContent() {
           </p>
         </div>
         
-        {profile?.subscriptionPlan === 'FREE' && (
+        {!loading && profile?.subscriptionPlan === 'FREE' && (
            <button 
              onClick={handleUpgrade}
              className={cn(
