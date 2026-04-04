@@ -3,8 +3,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useClerk, useAuth } from "@clerk/nextjs";
-import { UserProfile } from "./UserProfile";
+import { UserButton, useClerk, useAuth } from "@clerk/nextjs";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
@@ -138,20 +137,19 @@ export default function Sidebar() {
           </div>
       </div>
 
-      {/* User Section with Logout */}
-      <div className="pt-6 border-t border-border space-y-1 text-left">
-        <UserProfile variant="sidebar" />
+      {/* Simplified User Section */}
+      <div className="pt-6 border-t border-border flex items-center gap-2">
+        <div className="p-1 rounded-lg border border-border bg-secondary/20 shadow-sm">
+           <UserButton appearance={{ elements: { userButtonAvatarBox: "w-7 h-7" } }} />
+        </div>
 
         <button 
           onClick={handleLogout}
           disabled={isLoggingOut}
-          className="w-full flex items-center justify-between gap-3 p-2.5 rounded-lg text-muted-foreground hover:text-red-500 hover:bg-red-500/5 transition-all duration-200 group border border-transparent hover:border-red-500/10"
+          className="flex-1 flex items-center gap-2.5 p-2 rounded-lg text-muted-foreground hover:text-red-500 hover:bg-red-500/5 transition-all duration-200 group border border-transparent hover:border-red-500/10"
         >
-          <div className="flex items-center gap-3">
-             {isLoggingOut ? <Loader2 className="w-4 h-4 animate-spin text-red-500" /> : <LogOut className="w-4 h-4 transition-transform group-hover:translate-x-1" />}
-             <span className="text-xs font-bold uppercase tracking-widest leading-none">Logout</span>
-          </div>
-          <span className="text-[9px] font-mono opacity-0 group-hover:opacity-60 transition-opacity">EXIT</span>
+           {isLoggingOut ? <Loader2 className="w-4 h-4 animate-spin text-red-500" /> : <LogOut className="w-4 h-4 transition-transform group-hover:translate-x-1" />}
+           <span className="text-[10px] font-bold uppercase tracking-widest leading-none">Logout</span>
         </button>
       </div>
     </aside>
