@@ -61,7 +61,7 @@ export const logThreatController = async (req: Request, res: Response): Promise<
     res.status(201).json({ 
       success: true, 
       isThreat: true,
-      redirectUrl: 'https://sentinelsoc.vercel.app/blocked',
+      redirectUrl: 'https://sentinelsocsaasplatform.vercel.app/blocked',
       message: 'Threat logged successfully' 
     });
   } catch (error) {

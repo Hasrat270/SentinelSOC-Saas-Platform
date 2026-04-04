@@ -67,7 +67,7 @@ const sentinelAgent = (config) => {
       };
 
       try {
-        // Report to backend and wait for response to handle the 'redirect' flow
+        // 3. Report to backend and wait for response to handle the 'redirect' flow
         const response = await fetch(endpoint, {
           method: 'POST',
           headers: {
@@ -77,20 +77,28 @@ const sentinelAgent = (config) => {
           body: JSON.stringify(logData),
         });
 
-        const data = await response.json();
+        // Parse response safely
+        let data = {};
+        const contentType = response.headers.get("content-type");
+        if (contentType && contentType.includes("application/json")) {
+          data = await response.json();
+        } else if (!response.ok) {
+          const errorText = await response.text();
+          console.error(`[SentinelSOC Agent] Backend Error (${response.status}): ${errorText.slice(0, 100)}`);
+        }
 
         // 4. Production Redirection Logic (WAF Flow)
-        if (data.isThreat && data.redirectUrl) {
+        if (data && data.isThreat && data.redirectUrl) {
           console.log(`[SentinelSOC] Blocking attack of type ${detectedThreat}. Redirecting to safety.`);
           return res.redirect(data.redirectUrl);
         }
 
-        // Fallback to local block page if redirected hasn't happened and local blocking is ON
+        // Fallback to local block page if redirection hasn't happened and local blocking is ON
         if (shouldBlockLocally) {
           return res.status(403).send(generateBlockPage(detectedThreat, logData.sourceIp));
         }
       } catch (err) {
-        console.error('[SentinelSOC Agent] Failed to report threat or redirect:', err.message);
+        console.error('[SentinelSOC Agent] Critical Error reporting threat:', err.message);
         // Fallback to local blocking logic on connection error 
         if (shouldBlockLocally) {
           return res.status(403).send(generateBlockPage(detectedThreat, logData.sourceIp));
