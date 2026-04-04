@@ -161,7 +161,7 @@ export default function ThreatLogsPage() {
               </div>
               <div className="min-w-0">
                 <CardTitle className="text-foreground text-[11px] font-bold uppercase tracking-widest truncate">Security Events</CardTitle>
-                <p className="text-[10px] text-muted-foreground mt-0.5 uppercase tracking-tight truncate">
+                <p className="hidden md:block text-[10px] text-muted-foreground mt-0.5 uppercase tracking-tight truncate">
                   {total} Records Synchronized
                 </p>
               </div>
