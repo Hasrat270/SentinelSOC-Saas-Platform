@@ -164,7 +164,7 @@ export function SidebarContent() {
          </button>
       </div>
     </>
-  );bdsabdjsbads
+  );
 }
 
 function userUser() {
