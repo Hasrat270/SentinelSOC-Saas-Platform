@@ -2,12 +2,13 @@
 
 import { useEffect, useState } from "react";
 import { useAuth } from "@clerk/nextjs";
-import { toast } from "sonner";
+import { useToast } from "@/hooks/use-toast";
 import { Card, CardContent } from "@/components/ui/card";
 import { Copy, Check, FileCode, Terminal, BookOpen, ShieldCheck } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export default function DocsPage() {
+  const { toast } = useToast();
   const { getToken } = useAuth();
   const [profile, setProfile] = useState<any>(null);
   const [copied, setCopied] = useState(false);
@@ -44,7 +45,7 @@ app.use(sentinelAgent({
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     }
-    toast.success("Content copied!");
+    toast({ title: "Content copied!", variant: "success" });
   };
 
   return (

@@ -3,7 +3,7 @@
 import { useEffect, useState, useRef } from "react";
 import { useAuth, useClerk } from "@clerk/nextjs";
 import { io, Socket } from "socket.io-client";
-import { toast } from "sonner";
+import { useToast } from "@/hooks/use-toast";
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ShieldAlert, Wifi, WifiOff, Terminal, Search, Filter, ArrowRight } from "lucide-react";
@@ -19,6 +19,7 @@ interface ThreatLog {
 }
 
 export default function ThreatLogsPage() {
+  const { toast } = useToast();
   const { getToken } = useAuth();
   const [logs, setLogs] = useState<ThreatLog[]>([]);
   const [profile, setProfile] = useState<any>(null);
@@ -65,14 +66,18 @@ export default function ThreatLogsPage() {
             if (prev.find(l => l._id === threat._id)) return prev;
             return [threat, ...prev].slice(0, 100);
           });
-          toast.error(`${threat.threatType} detected`, {
+          toast({
+            title: `${threat.threatType} detected`,
             description: `From ${threat.attackerIp}`,
+            variant: "destructive"
           });
         });
 
         socket.on("limit-reached", (data) => {
-          toast.error("⚠️ Monthly Log Limit Reached", {
+          toast({
+            title: "⚠️ Monthly Log Limit Reached",
             description: "New threats are currently being blocked. Please upgrade to PRO.",
+            variant: "destructive"
           });
           setProfile((prev: any) => prev ? { ...prev, logCount: data.logCount } : null);
         });

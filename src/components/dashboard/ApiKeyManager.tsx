@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ConfirmModal } from "@/components/ConfirmModal";
-import { toast } from "sonner";
+import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 
 interface ApiKey {
@@ -32,13 +32,14 @@ export function ApiKeyManager({
   handleCreateKey,
   handleRevokeKey,
 }: ApiKeyManagerProps) {
+  const { toast } = useToast();
   const [copiedKey, setCopiedKey] = React.useState<string | null>(null);
   const [keyToRevoke, setKeyToRevoke] = React.useState<string | null>(null);
 
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text);
     setCopiedKey(text);
-    toast.success("Key copied to clipboard");
+    toast({ title: "Key copied to clipboard", variant: "success" });
     setTimeout(() => setCopiedKey(null), 2000);
   };
 

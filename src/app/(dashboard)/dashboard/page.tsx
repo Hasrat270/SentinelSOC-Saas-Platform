@@ -6,7 +6,7 @@ import { useAuth } from "@clerk/nextjs";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import { ShieldAlert, Zap, CheckCircle2 } from "lucide-react";
 import { useSocket } from "@/hooks/useSocket";
-import { toast } from "sonner";
+import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 
 // Refactored Modular Components
@@ -42,6 +42,7 @@ import { Suspense } from "react";
 
 function DashboardContent() {
   const { getToken } = useAuth();
+  const { toast } = useToast();
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const router = useRouter();
@@ -59,8 +60,10 @@ function DashboardContent() {
     
     if (!backendUrl) {
       console.error("NEXT_PUBLIC_BACKEND_URL is not defined in environment variables");
-      toast.error("Configuration Error", {
-        description: "Backend URL is missing. Please check your environment variables."
+      toast({
+        title: "Configuration Error",
+        description: "Backend URL is missing. Please check your environment variables.",
+        variant: "destructive"
       });
       setLoading(false);
       return;
@@ -83,8 +86,11 @@ function DashboardContent() {
         console.log("[Dashboard] Profile loaded:", profileData.tenantId);
       } else {
         console.error("[Dashboard] Profile fetch failed:", profileRes.status);
-        if (profileRes.status === 401) toast.error("Session expired. Please sign in again.");
-        else toast.error("Failed to load tenant profile");
+        if (profileRes.status === 401) {
+          toast({ title: "Session expired. Please sign in again.", variant: "destructive" });
+        } else {
+          toast({ title: "Failed to load tenant profile", variant: "destructive" });
+        }
       }
 
       if (statsRes.ok) {
@@ -93,13 +99,15 @@ function DashboardContent() {
 
     } catch (err) {
       console.error("[Dashboard] Failed to fetch data", err);
-      toast.error("Connection Error", {
-        description: "Could not reach the security engine. Please try again later."
+      toast({
+        title: "Connection Error",
+        description: "Could not reach the security engine. Please try again later.",
+        variant: "destructive"
       });
     } finally {
       setLoading(false);
     }
-  }, [getToken]);
+  }, [getToken, toast]);
 
   useEffect(() => {
     fetchData();
@@ -108,9 +116,10 @@ function DashboardContent() {
   // Handle Subscription Success Redirect with Auto-Retry
   useEffect(() => {
     if (searchParams.get("success") === "true") {
-      toast.success("Subscription Activated!", {
+      toast({
+        title: "Subscription Activated!",
         description: "Updating your account status... Please wait a moment.",
-        duration: 10000,
+        variant: "success"
       });
       
       let attempts = 0;
@@ -131,13 +140,17 @@ function DashboardContent() {
 
       retryFetch();
     }
-  }, [searchParams]);
+  }, [searchParams, fetchData, pathname, router, toast]);
 
   useEffect(() => {
     if (!socket) return;
 
     socket.on('new-threat', (newThreat: Threat) => {
-      toast.error(`Security Alert: ${newThreat.threatType} detected from ${newThreat.attackerIp}!`);
+      toast({
+        title: `Security Alert: ${newThreat.threatType}`,
+        description: `Source: ${newThreat.attackerIp}`,
+        variant: "destructive"
+      });
       setStats(prev => {
         if (!prev) return null;
         return {
@@ -149,8 +162,10 @@ function DashboardContent() {
     });
 
     socket.on('limit-reached', (data) => {
-      toast.error("⚠️ Monthly Log Limit Reached", {
-        description: "New threats are currently being blocked. Please upgrade to PRO."
+      toast({
+        title: "⚠️ Monthly Log Limit Reached",
+        description: "New threats are currently being blocked. Please upgrade to PRO.",
+        variant: "destructive"
       });
       setProfile(prev => prev ? { ...prev, logCount: data.logCount } : null);
     });
@@ -159,7 +174,7 @@ function DashboardContent() {
       socket.off('new-threat');
       socket.off('limit-reached');
     };
-  }, [socket]);
+  }, [socket, toast]);
 
   const handleCreateKey = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -167,7 +182,7 @@ function DashboardContent() {
     
     const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
     if (!backendUrl) {
-      toast.error("Configuration error. Backend URL is missing.");
+      toast({ title: "Configuration error. Backend URL is missing.", variant: "destructive" });
       return;
     }
 
@@ -187,15 +202,15 @@ function DashboardContent() {
         const data = await res.json();
         setProfile(prev => prev ? { ...prev, apiKeys: data.apiKeys } : null);
         setNewKeyName("");
-        toast.success("New API Key generated!");
+        toast({ title: "New API Key generated!", variant: "success" });
       } else {
         const errorData = await res.json().catch(() => ({}));
         console.error("[Dashboard] Key generation failed:", res.status, errorData);
-        toast.error(errorData.error || "Failed to generate key");
+        toast({ title: errorData.error || "Failed to generate key", variant: "destructive" });
       }
     } catch (err) {
       console.error("[Dashboard] Network error during key generation:", err);
-      toast.error("Network error. Could not connect to the server.");
+      toast({ title: "Network error. Could not connect to the server.", variant: "destructive" });
     } finally {
       setCreating(false);
     }
@@ -211,12 +226,13 @@ function DashboardContent() {
       if (res.ok) {
         const data = await res.json();
         setProfile(prev => prev ? { ...prev, apiKeys: data.apiKeys } : null);
-        toast.success("API Key revoked");
+        toast({ title: "API Key revoked", variant: "success" });
       }
     } catch (err) {
-      toast.error("Failed to revoke key");
+      toast({ title: "Failed to revoke key", variant: "destructive" });
     }
   };
+
 
   const isLimitReached = profile?.subscriptionPlan === 'FREE' && (profile?.logCount ?? 0) >= 500;
 
@@ -250,11 +266,11 @@ function DashboardContent() {
                  if (res.ok && data.url) {
                    window.location.href = data.url;
                  } else {
-                   toast.error(data.error || "Failed to initiate checkout");
+                   toast({ title: data.error || "Failed to initiate checkout", variant: "destructive" });
                  }
                } catch (err) {
                  console.error(err);
-                 toast.error("Network error. Please try again.");
+                 toast({ title: "Network error. Please try again.", variant: "destructive" });
                }
              }}
              className={cn(

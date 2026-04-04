@@ -2,12 +2,13 @@
 
 import { useEffect, useState } from "react";
 import { useAuth } from "@clerk/nextjs";
-import { toast } from "sonner";
+import { useToast } from "@/hooks/use-toast";
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Key, Copy, RefreshCw, Eye, EyeOff } from "lucide-react";
 
 export default function SettingsPage() {
+  const { toast } = useToast();
   const { getToken } = useAuth();
   const [apiKeys, setApiKeys] = useState<{ key: string; name: string }[]>([]);
   const [subscriptionPlan, setSubscriptionPlan] = useState<"FREE" | "PRO">("FREE");
@@ -42,7 +43,7 @@ export default function SettingsPage() {
   const copyToClipboard = () => {
     if (!primaryKey) return;
     navigator.clipboard.writeText(primaryKey);
-    toast.success("Primary API Key copied to clipboard");
+    toast({ title: "Primary API Key copied to clipboard", variant: "success" });
   };
 
   const [upgrading, setUpgrading] = useState(false);
@@ -59,11 +60,11 @@ export default function SettingsPage() {
       if (res.ok && data.url) {
         window.location.href = data.url;
       } else {
-        toast.error(data.error || "Failed to initiate checkout");
+        toast({ title: data.error || "Failed to initiate checkout", variant: "destructive" });
       }
     } catch (err) {
       console.error(err);
-      toast.error("Network error. Please try again.");
+      toast({ title: "Network error. Please try again.", variant: "destructive" });
     } finally {
       setUpgrading(false);
     }
