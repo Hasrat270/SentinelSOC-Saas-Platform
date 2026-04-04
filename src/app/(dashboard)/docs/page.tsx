@@ -177,30 +177,30 @@ app.use(sentinelAgent({
 
         <div className="space-y-4">
            <h2 className="text-sm font-black text-foreground uppercase tracking-[0.3em]">Configuration Schema</h2>
-           <div className="overflow-x-auto border border-border rounded-2xl shadow-2xl custom-scrollbar">
-              <table className="w-full text-left text-xs uppercase tracking-wider min-w-[600px]">
-                <thead className="bg-secondary/50 text-muted-foreground font-bold border-b border-border">
+           <div className="border border-border rounded-2xl shadow-2xl overflow-hidden">
+              <table className="w-full text-left uppercase tracking-tighter md:tracking-wider">
+                <thead className="bg-secondary/50 text-muted-foreground font-bold border-b border-border text-[9px] md:text-xs">
                    <tr>
-                      <th className="px-6 py-4">Parameter</th>
-                      <th className="px-6 py-4">Type</th>
-                      <th className="px-6 py-4">Description</th>
+                      <th className="px-2 md:px-6 py-3 md:py-4 w-min whitespace-nowrap">Parameter</th>
+                      <th className="px-2 md:px-6 py-3 md:py-4 w-min whitespace-nowrap">Type</th>
+                      <th className="px-3 md:px-6 py-3 md:py-4">Description</th>
                    </tr>
                 </thead>
-                <tbody className="divide-y divide-border/50 text-[10px]">
+                <tbody className="divide-y divide-border/50 text-[9px] md:text-[10px] font-medium">
                    <tr className="bg-card/20 group hover:bg-primary/5 transition-colors">
-                      <td className="px-6 py-4 font-mono text-primary font-bold">apiKey</td>
-                      <td className="px-6 py-4 text-muted-foreground">String</td>
-                      <td className="px-6 py-4 text-foreground leading-relaxed">Your unique SOC dashboard authentication token.</td>
+                      <td className="px-2 md:px-6 py-3 md:py-4 font-mono text-primary font-bold whitespace-nowrap">apiKey</td>
+                      <td className="px-2 md:px-6 py-3 md:py-4 text-muted-foreground whitespace-nowrap">String</td>
+                      <td className="px-3 md:px-6 py-3 md:py-4 text-foreground leading-relaxed whitespace-normal break-words">Your unique SOC dashboard authentication token.</td>
                    </tr>
                    <tr className="bg-card/20 group hover:bg-primary/5 transition-colors">
-                      <td className="px-6 py-4 font-mono text-primary font-bold">endpoint</td>
-                      <td className="px-6 py-4 text-muted-foreground">URL</td>
-                      <td className="px-6 py-4 text-foreground leading-relaxed">The SentinelSOC real-time ingestion API URL.</td>
+                      <td className="px-2 md:px-6 py-3 md:py-4 font-mono text-primary font-bold whitespace-nowrap">endpoint</td>
+                      <td className="px-2 md:px-6 py-3 md:py-4 text-muted-foreground whitespace-nowrap">URL</td>
+                      <td className="px-3 md:px-6 py-3 md:py-4 text-foreground leading-relaxed whitespace-normal break-words">The SentinelSOC real-time ingestion API URL.</td>
                    </tr>
                    <tr className="bg-card/20 group hover:bg-primary/5 transition-colors">
-                      <td className="px-6 py-4 font-mono text-primary font-bold">block</td>
-                      <td className="px-6 py-4 text-muted-foreground">Boolean</td>
-                      <td className="px-6 py-4 text-foreground leading-relaxed">Enables the redirection to our premium 'Access Denied' page.</td>
+                      <td className="px-2 md:px-6 py-3 md:py-4 font-mono text-primary font-bold whitespace-nowrap">block</td>
+                      <td className="px-2 md:px-6 py-3 md:py-4 text-muted-foreground whitespace-nowrap">Boolean</td>
+                      <td className="px-3 md:px-6 py-3 md:py-4 text-foreground leading-relaxed whitespace-normal break-words">Enables the redirection to our premium 'Access Denied' page.</td>
                    </tr>
                 </tbody>
              </table>
