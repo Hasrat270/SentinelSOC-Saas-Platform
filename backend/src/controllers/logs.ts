@@ -27,9 +27,17 @@ export const logThreatController = async (req: Request, res: Response): Promise<
     const tenant = (req as any).tenant;
 
     if (!tenant) {
+      console.error(`[SentinelSOC] Error: Tenant context lost in logThreatController. Request headers:`, JSON.stringify(req.headers));
       res.status(500).json({ error: 'Tenant context lost' });
       return;
     }
+
+    // Diagnostic log for production logs mapping
+    console.log(`[SentinelSOC] Threat Logging Event:
+      Tenant ID: ${tenant._id}
+      Clerk User ID: ${tenant.clerkUserId}
+      Subscription: ${tenant.subscriptionPlan}
+    `);
 
     const { threatType, method, url, sourceIp, payload } = req.body;
 
@@ -49,8 +57,13 @@ export const logThreatController = async (req: Request, res: Response): Promise<
     // 4. Emit real-time socket event specifically exclusively to this Tenant's room
     getIO().to(tenant._id.toString()).emit('new-threat', newThreat);
 
-    // 4. Return success 
-    res.status(201).json({ success: true, message: 'Threat logged successfully' });
+    // 4. Return success with threat indicators for the agent
+    res.status(201).json({ 
+      success: true, 
+      isThreat: true,
+      redirectUrl: 'https://sentinelsoc.vercel.app/blocked',
+      message: 'Threat logged successfully' 
+    });
   } catch (error) {
     console.error('Error logging threat:', error);
     res.status(500).json({ error: 'Internal server error' });
