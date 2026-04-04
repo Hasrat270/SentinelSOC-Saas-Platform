@@ -27,14 +27,15 @@ export default function DocsPage() {
     fetchProfile();
   }, [getToken]);
 
-  const apiKey = profile?.apiKey || "YOUR_API_KEY";
-  const endpoint = `${process.env.NEXT_PUBLIC_BACKEND_URL}/logs`;
+const apiKey = profile?.apiKeys?.[0]?.key || "sentinel_xxxxxxxxxxxxxxxx";
+  const endpoint = "https://sentinelsoc-backend.onrender.com/api/v1/logs";
 
   const codeSnippet = `import { sentinelAgent } from 'sentinel-soc-agent';
 
 app.use(sentinelAgent({
   apiKey: "${apiKey}",
-  endpoint: "${endpoint}"
+  endpoint: "${endpoint}",
+  block: true // Enable block-and-redirect flow
 }));`;
 
   const handleCopy = (text: string) => {
@@ -47,53 +48,53 @@ app.use(sentinelAgent({
   };
 
   return (
-    <div className="max-w-3xl mx-auto space-y-12 animate-in fade-in slide-in-from-bottom-2 duration-700 pb-20">
+    <div className="max-w-4xl mx-auto space-y-16 animate-in fade-in slide-in-from-bottom-4 duration-1000 pb-20">
        {/* Hero Section */}
-       <div>
-         <h1 className="text-3xl font-bold tracking-tight text-foreground flex items-center gap-3">
+       <div className="text-center space-y-4">
+         <div className="inline-flex items-center justify-center p-3 rounded-2xl bg-primary/10 border border-primary/20 mb-4">
            <BookOpen className="w-8 h-8 text-primary" />
-           Integration Guide
+         </div>
+         <h1 className="text-4xl font-extrabold tracking-tight text-foreground uppercase">
+           Developer <span className="text-primary">Docs</span>
          </h1>
-         <p className="text-muted-foreground mt-2 max-w-2xl text-sm leading-relaxed">
-           Implement enterprise-grade traffic interception in minutes. Follow the steps below to connect your Node.js infrastructure.
+         <p className="text-muted-foreground max-w-2xl mx-auto text-sm font-bold uppercase tracking-widest leading-relaxed">
+           Connect your infrastructure to the SentinelSOC Real-Time Engine in under 2 minutes.
          </p>
        </div>
 
-       <div className="grid gap-12">
+       <div className="grid gap-16">
           {/* Step 1 */}
-          <div className="space-y-5">
-             <div className="flex items-center gap-4">
-                <div className="w-10 h-10 rounded-lg bg-primary flex items-center justify-center text-white font-bold text-lg shadow-lg shadow-primary/20">1</div>
+          <div className="space-y-6">
+             <div className="flex items-center gap-6">
+                <div className="w-12 h-12 rounded-xl bg-primary flex items-center justify-center text-white font-black text-xl shadow-2xl shadow-primary/30">1</div>
                 <div>
-                   <h2 className="text-lg font-bold text-foreground uppercase tracking-tight">Install the SDK</h2>
-                   <p className="text-xs text-muted-foreground">Add the sentinel agent to your project dependencies</p>
+                   <h2 className="text-xl font-black text-foreground uppercase tracking-tighter">Install SDK</h2>
+                   <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-[0.2em] mt-1 italic">npm-registry / node.js</p>
                 </div>
              </div>
-             {/* CMD Window 1 */}
-             <div className="bg-[#0d1117] rounded-xl overflow-hidden shadow-2xl border border-border group">
-                <div className="bg-card/80 border-b border-border px-5 py-3 flex items-center justify-between select-none">
+             
+             <div className="bg-[#0d1117] rounded-2xl overflow-hidden shadow-2xl border border-border group relative">
+                <div className="bg-card/80 border-b border-border px-6 py-4 flex items-center justify-between select-none">
                    <div className="flex gap-2">
                       <div className="w-3 h-3 rounded-full bg-red-500/50" />
                       <div className="w-3 h-3 rounded-full bg-orange-500/50" />
                       <div className="w-3 h-3 rounded-full bg-green-500/50" />
                    </div>
-                   <div className="flex items-center gap-2 px-3 py-1 bg-secondary/50 rounded-md border border-border">
-                      <Terminal className="w-3.5 h-3.5 text-primary" />
-                      <span className="text-[10px] text-muted-foreground font-bold tracking-widest uppercase">terminal</span>
+                   <div className="flex items-center gap-2.5 px-4 py-1.5 bg-secondary/50 rounded-lg border border-border">
+                      <Terminal className="w-4 h-4 text-primary" />
+                      <span className="text-[11px] text-muted-foreground font-bold tracking-[0.2em] uppercase">terminal</span>
                    </div>
-                   <div className="w-12 text-right">
-                      <button 
-                        onClick={() => handleCopy("npm install sentinel-soc-agent")}
-                        className="text-muted-foreground hover:text-primary transition-colors cursor-pointer"
-                      >
-                         <Copy className="w-4 h-4" />
-                      </button>
-                   </div>
+                   <button 
+                     onClick={() => handleCopy("npm install sentinel-soc-agent")}
+                     className="p-2 rounded-lg bg-primary/10 hover:bg-primary/20 text-primary transition-all cursor-pointer border border-primary/20"
+                   >
+                      <Copy className="w-4 h-4" />
+                   </button>
                 </div>
-                <div className="p-6 font-mono text-[13px] leading-relaxed bg-card/20">
-                   <div className="flex items-center gap-3">
-                      <span className="text-primary opacity-50">$</span>
-                      <span className="text-foreground font-medium selection:bg-primary/30">npm install <span className="text-primary font-bold">sentinel-soc-agent</span></span>
+                <div className="p-8 font-mono text-sm leading-relaxed bg-card/20">
+                   <div className="flex items-center gap-4">
+                      <span className="text-primary/40 font-bold">$</span>
+                      <span className="text-foreground font-medium selection:bg-primary/30">npm install <span className="text-primary font-black">sentinel-soc-agent</span></span>
                    </div>
                 </div>
              </div>
@@ -101,62 +102,61 @@ app.use(sentinelAgent({
 
           {/* Step 2 */}
           <div className="space-y-6">
-             <div className="flex items-center gap-4">
-                <div className="w-10 h-10 rounded-lg bg-primary flex items-center justify-center text-white font-bold text-lg shadow-lg shadow-primary/20">2</div>
+             <div className="flex items-center gap-6">
+                <div className="w-12 h-12 rounded-xl bg-primary flex items-center justify-center text-white font-black text-xl shadow-2xl shadow-primary/30">2</div>
                 <div>
-                   <h2 className="text-lg font-bold text-foreground uppercase tracking-tight">Initialize Middleware</h2>
-                   <p className="text-xs text-muted-foreground">Inject the security agent into your Express stack</p>
+                   <h2 className="text-xl font-black text-foreground uppercase tracking-tighter">Middleware Setup</h2>
+                   <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-[0.2em] mt-1 italic">express.js / main entry</p>
                 </div>
              </div>
              
-             {/* Code Window */}
-             <div className="bg-[#0d1117] rounded-xl overflow-hidden shadow-2xl border border-border group">
-                {/* Header */}
-                <div className="bg-card/80 border-b border-border px-5 py-3 flex items-center justify-between select-none">
+             <div className="bg-[#0d1117] rounded-2xl overflow-hidden shadow-2xl border border-border group">
+                <div className="bg-card/80 border-b border-border px-6 py-4 flex items-center justify-between select-none">
                    <div className="flex gap-2">
                       <div className="w-3 h-3 rounded-full bg-red-500/50" />
                       <div className="w-3 h-3 rounded-full bg-orange-500/50" />
                       <div className="w-3 h-3 rounded-full bg-green-500/50" />
                    </div>
-                   <div className="flex items-center gap-2 px-3 py-1 bg-secondary/50 rounded-md border border-border">
-                      <FileCode className="w-3.5 h-3.5 text-primary" />
-                      <span className="text-[10px] text-muted-foreground font-bold tracking-widest uppercase">app.js</span>
+                   <div className="flex items-center gap-2.5 px-4 py-1.5 bg-secondary/50 rounded-lg border border-border">
+                      <FileCode className="w-4 h-4 text-primary" />
+                      <span className="text-[11px] text-muted-foreground font-bold tracking-[0.2em] uppercase">app.js</span>
                    </div>
-                   <div className="w-12 text-right">
-                      <button 
-                        onClick={() => handleCopy(codeSnippet)}
-                        className="text-muted-foreground hover:text-primary transition-colors cursor-pointer"
-                      >
-                         {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
-                      </button>
-                   </div>
+                   <button 
+                     onClick={() => handleCopy(codeSnippet)}
+                     className="p-2 rounded-lg bg-primary/10 hover:bg-primary/20 text-primary transition-all cursor-pointer border border-primary/20"
+                   >
+                      {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+                   </button>
                 </div>
 
-                {/* Editor */}
-                <div className="p-8 font-mono text-[13px] relative leading-relaxed bg-card/20">
-                   <div className="space-y-1 overflow-x-auto">
-                      <div className="flex gap-6">
-                         <span className="text-muted-foreground/30 w-5 text-right select-none">1</span>
-                         <span className="whitespace-nowrap"><span className="text-primary opacity-80">import</span> &#123; <span className="text-foreground">sentinelAgent</span> &#125; <span className="text-primary opacity-80">from</span> <span className="text-primary">'sentinel-soc-agent'</span>;</span>
+                <div className="p-8 font-mono text-sm relative leading-relaxed bg-card/20">
+                   <div className="space-y-1.5 overflow-x-auto text-[13px]">
+                      <div className="flex gap-8">
+                         <span className="text-muted-foreground/30 w-6 text-right select-none font-bold">1</span>
+                         <span className="whitespace-nowrap"><span className="text-primary font-bold">import</span> &#123; <span className="text-foreground">sentinelAgent</span> &#125; <span className="text-primary font-bold">from</span> <span className="text-primary">'sentinel-soc-agent'</span>;</span>
                       </div>
-                      <div className="flex gap-6">
-                         <span className="text-muted-foreground/30 w-5 text-right select-none">2</span>
-                         <span className="text-muted-foreground italic opacity-50">// Connect agent with your credentials</span>
+                      <div className="flex gap-8">
+                         <span className="text-muted-foreground/30 w-6 text-right select-none font-bold">2</span>
+                         <span className="text-muted-foreground italic opacity-50">// Initialize defense engine</span>
                       </div>
-                      <div className="flex gap-6">
-                         <span className="text-muted-foreground/30 w-5 text-right select-none">3</span>
+                      <div className="flex gap-8">
+                         <span className="text-muted-foreground/30 w-6 text-right select-none font-bold">3</span>
                          <span className="whitespace-nowrap"><span className="text-foreground">app</span>.<span className="text-primary">use</span>(<span className="text-primary">sentinelAgent</span>(&#123;</span>
                       </div>
-                      <div className="flex gap-6">
-                         <span className="text-muted-foreground/30 w-5 text-right select-none">4</span>
-                         <span className="ml-6 whitespace-nowrap"><span className="text-foreground">apiKey</span>: <span className="text-primary">"{apiKey}"</span>,</span>
+                      <div className="flex gap-8">
+                         <span className="text-muted-foreground/30 w-6 text-right select-none font-bold">4</span>
+                         <span className="ml-8 whitespace-nowrap"><span className="text-foreground">apiKey</span>: <span className="text-primary font-bold">"{apiKey}"</span>,</span>
                       </div>
-                      <div className="flex gap-6">
-                         <span className="text-muted-foreground/30 w-5 text-right select-none">5</span>
-                         <span className="ml-6 whitespace-nowrap"><span className="text-foreground">endpoint</span>: <span className="text-primary">"{endpoint}"</span></span>
+                      <div className="flex gap-8">
+                         <span className="text-muted-foreground/30 w-6 text-right select-none font-bold">5</span>
+                         <span className="ml-8 whitespace-nowrap"><span className="text-foreground">endpoint</span>: <span className="text-primary font-bold">"{endpoint}"</span>,</span>
                       </div>
-                      <div className="flex gap-6">
-                         <span className="text-muted-foreground/30 w-5 text-right select-none">6</span>
+                      <div className="flex gap-8">
+                         <span className="text-muted-foreground/30 w-6 text-right select-none font-bold">6</span>
+                         <span className="ml-8 whitespace-nowrap"><span className="text-foreground font-bold">block</span>: <span className="text-primary font-bold">true </span> <span className="text-muted-foreground/50 italic capitalize ml-3">// Enables automatic redirection</span></span>
+                      </div>
+                      <div className="flex gap-8">
+                         <span className="text-muted-foreground/30 w-6 text-right select-none font-bold">7</span>
                          <span className="whitespace-nowrap">&#125;));</span>
                       </div>
                    </div>
@@ -165,20 +165,58 @@ app.use(sentinelAgent({
           </div>
        </div>
 
-       {/* Security Notice */}
-       <div className="bg-primary/5 border border-primary/20 p-6 rounded-xl relative overflow-hidden group">
-          <div className="flex gap-5 items-start relative z-10">
-             <div className="p-2.5 rounded-lg bg-primary/10 border border-primary/20">
-                <ShieldCheck className="w-5 h-5 text-primary" />
+       {/* Config Reference */}
+       <div className="space-y-4">
+          <h2 className="text-sm font-black text-foreground uppercase tracking-[0.3em]">Configuration Schema</h2>
+          <div className="overflow-hidden border border-border rounded-2xl">
+             <table className="w-full text-left text-xs uppercase tracking-wider">
+                <thead className="bg-secondary/50 text-muted-foreground font-bold border-b border-border">
+                   <tr>
+                      <th className="px-6 py-4">Parameter</th>
+                      <th className="px-6 py-4">Type</th>
+                      <th className="px-6 py-4">Description</th>
+                   </tr>
+                </thead>
+                <tbody className="divide-y divide-border/50 text-[10px]">
+                   <tr className="bg-card/20 group hover:bg-primary/5 transition-colors">
+                      <td className="px-6 py-4 font-mono text-primary font-bold">apiKey</td>
+                      <td className="px-6 py-4 text-muted-foreground">String</td>
+                      <td className="px-6 py-4 text-foreground leading-relaxed">Your unique SOC dashboard authentication token.</td>
+                   </tr>
+                   <tr className="bg-card/20 group hover:bg-primary/5 transition-colors">
+                      <td className="px-6 py-4 font-mono text-primary font-bold">endpoint</td>
+                      <td className="px-6 py-4 text-muted-foreground">URL</td>
+                      <td className="px-6 py-4 text-foreground leading-relaxed">The SentinelSOC real-time ingestion API URL.</td>
+                   </tr>
+                   <tr className="bg-card/20 group hover:bg-primary/5 transition-colors">
+                      <td className="px-6 py-4 font-mono text-primary font-bold">block</td>
+                      <td className="px-6 py-4 text-muted-foreground">Boolean</td>
+                      <td className="px-6 py-4 text-foreground leading-relaxed">Enables the redirection to our premium 'Access Denied' page.</td>
+                   </tr>
+                </tbody>
+             </table>
+          </div>
+       </div>
+
+       {/* Final Guidance */}
+       <div className="bg-primary/10 border border-primary/30 p-8 rounded-3xl relative overflow-hidden group">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-primary/20 blur-[80px] -mr-16 -mt-16 group-hover:bg-primary/40 transition-all duration-1000" />
+          <div className="flex gap-8 items-start relative z-10">
+             <div className="p-4 rounded-2xl bg-primary/20 border border-primary/30 shadow-2xl">
+                <ShieldCheck className="w-8 h-8 text-primary shadow-primary/50" />
              </div>
-             <div>
-                <p className="text-sm font-bold text-foreground uppercase tracking-widest leading-none">Security Best Practice</p>
-                <p className="text-xs text-muted-foreground mt-3 leading-relaxed max-w-2xl">
-                   Protect your credentials by using environment variables. Never commit your <code className="bg-primary/10 px-1.5 py-0.5 rounded text-primary font-mono font-bold">apiKey</code> directly to version control.
+             <div className="space-y-2">
+                <p className="text-sm font-black text-foreground uppercase tracking-widest leading-none">Developer Best Practice</p>
+                <p className="text-xs text-muted-foreground mt-3 leading-relaxed max-w-2xl font-medium">
+                   For maximum security, never hardcode your <code className="bg-primary/20 px-2 py-1 rounded-md text-primary font-mono font-bold tracking-normal">apiKey</code> in production code. 
+                   We strongly recommend using environment variables (e.g., <code className="bg-primary/20 px-2 py-1 rounded-md text-primary font-mono font-bold">process.env.SENTINEL_API_KEY</code>) to manage your credentials safely.
                 </p>
              </div>
           </div>
        </div>
+    </div>
+  );
+}
     </div>
   );
 }
