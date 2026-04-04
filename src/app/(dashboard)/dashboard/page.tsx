@@ -4,7 +4,7 @@ import * as React from "react";
 import { useEffect, useState } from "react";
 import { useAuth } from "@clerk/nextjs";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
-import { ShieldAlert, Zap, CheckCircle2 } from "lucide-react";
+import { ShieldAlert, Zap, CheckCircle2, Loader2 } from "lucide-react";
 import { useSocket } from "@/hooks/useSocket";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
@@ -52,6 +52,7 @@ function DashboardContent() {
   const [loading, setLoading] = useState(true);
   const [creating, setCreating] = useState(false);
   const [newKeyName, setNewKeyName] = useState("");
+  const [revoking, setRevoking] = useState(false);
 
   const { socket, isConnected } = useSocket(profile?.tenantId);
 
@@ -217,6 +218,7 @@ function DashboardContent() {
   };
 
   const handleRevokeKey = async (key: string) => {
+    setRevoking(true);
     try {
       const token = await getToken();
       const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/tenant/keys/${key}`, {
@@ -230,6 +232,8 @@ function DashboardContent() {
       }
     } catch (err) {
       toast({ title: "Failed to revoke key", variant: "destructive" });
+    } finally {
+      setRevoking(false);
     }
   };
 
@@ -280,7 +284,7 @@ function DashboardContent() {
                  : "bg-primary hover:bg-primary/90 shadow-primary/20"
              )}
            >
-             <Zap className="w-3.5 h-3.5 group-hover:fill-current transition-all" />
+             {loading ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Zap className="w-3.5 h-3.5 group-hover:fill-current transition-all" />}
              Upgrade to PRO
            </button>
         )}
@@ -293,6 +297,7 @@ function DashboardContent() {
         setNewKeyName={setNewKeyName}
         handleCreateKey={handleCreateKey}
         handleRevokeKey={handleRevokeKey}
+        revoking={revoking}
       />
 
       <StatCards 

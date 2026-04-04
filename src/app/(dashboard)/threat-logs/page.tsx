@@ -6,7 +6,7 @@ import { io, Socket } from "socket.io-client";
 import { useToast } from "@/hooks/use-toast";
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ShieldAlert, Wifi, WifiOff, Terminal, Search, Filter, ArrowRight } from "lucide-react";
+import { ShieldAlert, Wifi, WifiOff, Terminal, Search, Filter, ArrowRight, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface ThreatLog {
@@ -26,6 +26,7 @@ export default function ThreatLogsPage() {
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [initialLoading, setInitialLoading] = useState(true);
   const [connected, setConnected] = useState(false);
   const socketRef = useRef<Socket | null>(null);
   const limit = 50;
@@ -61,17 +62,17 @@ export default function ThreatLogsPage() {
 
         socket.on("disconnect", () => setConnected(false));
 
-    socket.on("new-threat", (threat: ThreatLog) => {
-      setLogs((prev) => {
-        if (prev.find(l => l._id === threat._id)) return prev;
-        return [threat, ...prev].slice(0, 100);
-      });
-      toast({
-        title: `${threat.threatType} detected`,
-        description: `From ${threat.attackerIp}`,
-        variant: threat.severity === "High" ? "threat" : threat.severity === "Medium" ? "warning" : "low"
-      });
-    });
+        socket.on("new-threat", (threat: ThreatLog) => {
+          setLogs((prev) => {
+            if (prev.find(l => l._id === threat._id)) return prev;
+            return [threat, ...prev].slice(0, 100);
+          });
+          toast({
+            title: `${threat.threatType} detected`,
+            description: `From ${threat.attackerIp}`,
+            variant: threat.severity === "High" ? "threat" : threat.severity === "Medium" ? "warning" : "low"
+          });
+        });
 
         socket.on("limit-reached", (data) => {
           toast({
@@ -84,6 +85,7 @@ export default function ThreatLogsPage() {
       } catch (err) {
         console.error("Socket setup failed", err);
       } finally {
+        setInitialLoading(false);
         setLoading(false);
       }
     };
@@ -113,6 +115,7 @@ export default function ThreatLogsPage() {
       console.error("Failed to fetch logs", err);
     } finally {
       setLoading(false);
+      setInitialLoading(false);
     }
   };
 
@@ -142,7 +145,14 @@ export default function ThreatLogsPage() {
         </div>
       </div>
 
-      <Card className="bg-card border-border shadow-sm overflow-hidden">
+      <Card className="bg-card border-border shadow-sm overflow-hidden relative">
+        {/* Loading Progress Bar */}
+        {loading && !initialLoading && (
+           <div className="absolute top-0 left-0 right-0 h-0.5 bg-primary/20 z-50">
+             <div className="h-full bg-primary animate-progress-fast w-[40%] shadow-[0_0_10px_rgba(var(--primary),0.5)]" />
+           </div>
+        )}
+
         <CardHeader className="border-b border-border/50 pb-5">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
@@ -165,7 +175,7 @@ export default function ThreatLogsPage() {
           </div>
         </CardHeader>
         
-        <div className="overflow-x-auto min-h-[500px]">
+        <div className="overflow-x-auto min-h-[500px] relative">
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-border text-muted-foreground bg-secondary/30">
@@ -176,8 +186,11 @@ export default function ThreatLogsPage() {
                 <th className="text-right py-4 px-6 font-bold uppercase tracking-widest text-[10px]">Time Detected</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-border">
-              {loading ? (
+            <tbody className={cn(
+               "divide-y divide-border transition-opacity duration-300",
+               loading && !initialLoading ? "opacity-30 pointer-events-none" : "opacity-100"
+            )}>
+              {initialLoading ? (
                 Array.from({ length: 10 }).map((_, i) => (
                   <tr key={i} className="animate-pulse">
                     <td colSpan={5} className="py-5 px-6">
@@ -200,7 +213,7 @@ export default function ThreatLogsPage() {
                   </td>
                 </tr>
               ) : logs.map((log) => (
-                <tr key={log._id} className="hover:bg-secondary/50 transition-colors group border-border">
+                <tr key={log._id} className="hover:bg-secondary/50 transition-colors group border-border animate-in fade-in duration-500">
                   <td className="py-4 px-6">
                     <span className="text-foreground font-bold text-xs uppercase tracking-tight">{log.threatType}</span>
                   </td>
@@ -231,6 +244,12 @@ export default function ThreatLogsPage() {
               ))}
             </tbody>
           </table>
+          
+          {loading && !initialLoading && (
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+               <Loader2 className="w-8 h-8 text-primary animate-spin opacity-50" />
+            </div>
+          )}
         </div>
 
         <CardFooter className="border-t border-border/50 py-4 px-6 flex items-center justify-between bg-secondary/10">
@@ -246,6 +265,7 @@ export default function ThreatLogsPage() {
               onClick={() => setPage(p => Math.max(1, p - 1))}
               disabled={page === 1 || loading}
             >
+              {loading && page > 1 ? <Loader2 className="w-3 h-3 animate-spin mr-2" /> : null}
               Previous
             </Button>
             <Button
@@ -255,6 +275,7 @@ export default function ThreatLogsPage() {
               onClick={() => setPage(p => Math.min(Math.ceil(total / limit), p + 1))}
               disabled={page >= Math.ceil(total / limit) || loading}
             >
+              {loading && page < Math.ceil(total / limit) ? <Loader2 className="w-3 h-3 animate-spin mr-2" /> : null}
               Next
             </Button>
           </div>

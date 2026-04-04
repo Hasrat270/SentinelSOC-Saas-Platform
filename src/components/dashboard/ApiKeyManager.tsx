@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Key, Plus, Copy, Check, Trash2, ShieldAlert, Eye, EyeOff } from "lucide-react";
+import { Key, Plus, Copy, Check, Trash2, ShieldAlert, Eye, EyeOff, Loader2 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -22,6 +22,7 @@ interface ApiKeyManagerProps {
   setNewKeyName: (name: string) => void;
   handleCreateKey: (e: React.FormEvent) => void;
   handleRevokeKey: (key: string) => void;
+  revoking: boolean;
 }
 
 export function ApiKeyManager({
@@ -31,6 +32,7 @@ export function ApiKeyManager({
   setNewKeyName,
   handleCreateKey,
   handleRevokeKey,
+  revoking,
 }: ApiKeyManagerProps) {
   const { toast } = useToast();
   const [copiedKey, setCopiedKey] = React.useState<string | null>(null);
@@ -62,7 +64,7 @@ export function ApiKeyManager({
 
   return (
     <>
-      <Card className="bg-card border-border shadow-sm overflow-hidden">
+      <Card className="bg-card border-border shadow-sm overflow-hidden animate-in fade-in duration-500">
         <CardHeader className="border-b border-border/50 pb-6 flex flex-row items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="p-2 rounded-lg bg-primary/10 border border-primary/20">
@@ -86,7 +88,7 @@ export function ApiKeyManager({
                   className="h-8 text-[10px] font-bold uppercase tracking-widest bg-primary hover:bg-primary/90"
               >
                   {creating ? (
-                    <span className="flex items-center gap-1.5"><Plus className="w-3 h-3 animate-spin" /> Generating</span>
+                    <span className="flex items-center gap-1.5"><Loader2 className="w-3 h-3 animate-spin" /> Generating</span>
                   ) : (
                     <span className="flex items-center gap-1.5"><Plus className="w-3.5 h-3.5" /> New Key</span>
                   )}
@@ -94,13 +96,13 @@ export function ApiKeyManager({
           </form>
         </CardHeader>
         
-        <div className="overflow-x-auto min-h-[120px]">
-          <table className="w-full text-[11px] border-collapse">
+        <div className="overflow-x-auto min-h-[120px] transition-all duration-500">
+          <table className="w-full text-[11px] border-collapse tabular-nums">
             <thead>
               <tr className="border-b border-border text-muted-foreground bg-secondary/20 font-bold uppercase tracking-widest">
                 <th className="text-left py-4 px-6">Name</th>
                 <th className="text-left py-4 px-6">Created At</th>
-                <th className="text-left py-4 px-6 w-[350px]">API Key</th>
+                <th className="text-left py-4 px-6 w-[400px]">API Key</th>
                 <th className="text-right py-4 px-6">Actions</th>
               </tr>
             </thead>
@@ -116,23 +118,25 @@ export function ApiKeyManager({
                     </span>
                   </td>
                   <td className="py-4 px-6">
-                    <div className="flex items-center gap-3 bg-background/50 border border-border px-3 py-1.5 rounded-lg w-fit">
-                      <code className="font-mono text-primary font-bold tracking-widest min-w-[220px]">
-                        {revealedKeys.has(k.key) 
-                          ? k.key 
-                          : `sentinel_${k.key.slice(0, 3)}•••••••••••••`}
+                    <div className="flex items-center gap-3 bg-background/50 border border-border px-3 py-1.5 rounded-lg w-fit transition-all duration-300 ease-in-out">
+                      <code className="font-mono text-primary font-bold tracking-widest min-w-[280px] sm:min-w-[320px] text-[10px] break-all select-all transition-all duration-300">
+                        <span className="animate-in fade-in zoom-in-95 duration-300">
+                          {revealedKeys.has(k.key) 
+                            ? k.key 
+                            : `sentinel_${k.key.slice(0, 3)}••••••••••••••••`}
+                        </span>
                       </code>
                       <Button
                         variant="ghost"
                         size="icon"
-                        className="h-6 w-6 text-muted-foreground hover:text-primary"
+                        className="h-6 w-6 text-muted-foreground hover:text-primary shrink-0"
                         onClick={() => toggleReveal(k.key)}
                       >
                         {revealedKeys.has(k.key) ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
                       </Button>
                     </div>
                   </td>
-                  <td className="py-4 px-6 text-right space-x-1">
+                  <td className="py-4 px-6 text-right space-x-1 whitespace-nowrap">
                     <Button
                       variant="ghost"
                       size="icon"
@@ -144,10 +148,11 @@ export function ApiKeyManager({
                     <Button
                       variant="ghost"
                       size="icon"
+                      disabled={revoking}
                       className="h-8 w-8 text-muted-foreground hover:text-red-500 hover:bg-red-500/10 transition-colors"
                       onClick={() => setKeyToRevoke(k.key)}
                     >
-                      <Trash2 className="w-3.5 h-3.5" />
+                      {revoking ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Trash2 className="w-3.5 h-3.5" />}
                     </Button>
                   </td>
                 </tr>
