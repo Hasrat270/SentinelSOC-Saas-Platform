@@ -149,11 +149,11 @@ export function SidebarContent() {
               )}
               
               {/* Flash/Shine Effect */}
-              <div className="absolute top-0 -inset-full h-full w-1/2 z-5 block transform -skew-x-12 bg-gradient-to-r from-transparent via-white/40 to-transparent opacity-0 group-hover:animate-shine" />
+              <div className="absolute top-0 -inset-full h-full w-1/2 z-10 block transform -skew-x-12 bg-gradient-to-r from-transparent via-white/40 to-transparent opacity-0 group-hover:animate-shine pointer-events-none" />
             </button>
             
             {/* Status Badge - Digital Identity Style */}
-            <div className="absolute -bottom-0.5 -right-0.5 p-1 bg-primary rounded-full border-2 border-background shadow-lg z-10 scale-90 group-hover:scale-100 transition-transform duration-300">
+            <div className="absolute -bottom-0.5 -right-0.5 p-1 bg-primary rounded-full border-2 border-background shadow-lg z-20 scale-90 group-hover:scale-110 transition-transform duration-300">
                <Shield className="w-2.5 h-2.5 text-white" />
             </div>
          </div>
