@@ -11,19 +11,19 @@ const Toaster = ({ ...props }: ToasterProps) => {
     <Sonner
       theme="dark"
       className="toaster group"
-      richColors
       icons={{
-        success: <CircleCheckIcon className="size-5 text-white" />,
-        info: <InfoIcon className="size-5 text-white" />,
-        warning: <TriangleAlertIcon className="size-5 text-white" />,
-        error: <OctagonXIcon className="size-5 text-white" />,
+        success: <CircleCheckIcon className="size-5 text-emerald-500" style={{ color: '#10b981' }} />,
+        info: <InfoIcon className="size-5 text-sky-500" style={{ color: '#0ea5e9' }} />,
+        warning: <TriangleAlertIcon className="size-5 text-amber-500" style={{ color: '#f59e0b' }} />,
+        error: <OctagonXIcon className="size-5 text-rose-500" style={{ color: '#f43f5e' }} />,
         loading: <Loader2Icon className="size-5 animate-spin text-white" />,
       }}
       toastOptions={{
         style: {
           background: "#0f172a",
-          border: "1px solid rgba(255, 255, 255, 0.1)",
+          border: "2px solid rgba(255, 255, 255, 0.1)",
           color: "#f8fafc",
+          opacity: "1 !important",
           "--success-bg": "#059669",
           "--success-border": "#10b981",
           "--success-text": "#fff",
@@ -38,7 +38,7 @@ const Toaster = ({ ...props }: ToasterProps) => {
           "--warning-text": "#fff",
         } as React.CSSProperties,
         classNames: {
-          toast: "group toast font-sans !opacity-100",
+          toast: "group toast font-sans !opacity-100 !bg-[#0f172a] !border-2",
           description: "group-[.toast]:text-white",
           actionButton: "group-[.toast]:bg-indigo-600 group-[.toast]:text-white",
           cancelButton: "group-[.toast]:bg-zinc-800 group-[.toast]:text-zinc-400",

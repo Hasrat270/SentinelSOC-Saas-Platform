@@ -123,15 +123,16 @@
 
 
 /* Premium Vibrant Toast Overhaul (Global Overrides) */
-[data-sonner-toast] {
+html body [data-sonner-toast] {
   --radius: 12px;
   border-width: 2px !important;
   padding: 16px !important;
   font-weight: 700 !important;
   font-family: var(--font-sans) !important;
   box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.7) !important;
-  background-color: var(--bg-surface) !important;
+  background-color: #0f172a !important;
   opacity: 1 !important;
+  visibility: visible !important;
 }
 
 [data-sonner-toast] [data-title] {
