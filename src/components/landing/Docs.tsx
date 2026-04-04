@@ -22,7 +22,8 @@ const app = express();
 // 🛡️ Single line protection
 app.use(sentinelAgent({
   apiKey: process.env.SENTINEL_API_KEY,
-  strict: true
+  endpoint: "https://sentinelsoc-backend.onrender.com/api/v1/logs",
+  block: true // Enables auto-redirection
 }));
 
 app.listen(3000);`;
@@ -123,7 +124,8 @@ app.listen(3000);`;
                       <span className="text-slate-500">// 🛡️ Single line protection</span>{"\n"}
                       app.<span className="text-amber-400">use</span>(<span className="text-amber-400">sentinelAgent</span>({"{"}{"\n"}
                       {"  "}apiKey: process.<span className="text-blue-400">env</span>.SENTINEL_API_KEY,{"\n"}
-                      {"  "}strict: <span className="text-amber-400">true</span>{"\n"}
+                      {"  "}endpoint: <span className="text-emerald-400">"https://sentinelsoc-backend.onrender.com/api/v1/logs"</span>,{"\n"}
+                      {"  "}block: <span className="text-amber-400">true </span> <span className="text-slate-500 italic ml-2">// Enables auto-redirection</span>{"\n"}
                       {"}"}));{"\n\n"}
                       app.<span className="text-amber-400">listen</span>(<span className="text-emerald-400">3000</span>);
                     </code>
