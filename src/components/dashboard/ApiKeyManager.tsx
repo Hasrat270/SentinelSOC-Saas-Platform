@@ -149,8 +149,24 @@ export function ApiKeyManager({
                       variant="ghost"
                       size="icon"
                       disabled={revoking}
-                      className="h-8 w-8 text-muted-foreground hover:text-red-500 hover:bg-red-500/10 transition-colors"
-                      onClick={() => setKeyToRevoke(k.key)}
+                      className={cn(
+                        "h-8 w-8 transition-colors",
+                        apiKeys.length === 1 
+                          ? "text-muted-foreground/30 cursor-not-allowed" 
+                          : "text-muted-foreground hover:text-red-500 hover:bg-red-500/10"
+                      )}
+                      onClick={() => {
+                        if (apiKeys.length === 1) {
+                          toast({
+                            title: "Security Protocol",
+                            description: "At least one API key must remain active to maintain SOC protection.",
+                            variant: "destructive"
+                          });
+                          return;
+                        }
+                        setKeyToRevoke(k.key);
+                      }}
+                      title={apiKeys.length === 1 ? "Cannot delete the last active API key" : "Revoke API Key"}
                     >
                       {revoking ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Trash2 className="w-3.5 h-3.5" />}
                     </Button>

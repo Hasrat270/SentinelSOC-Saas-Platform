@@ -138,7 +138,7 @@ export default function Sidebar() {
       </div>
 
       {/* Simplified User Section */}
-      <div className="pt-6 border-t border-border flex items-center gap-3">
+      <div className="pt-6 border-t border-border flex items-center gap-3 px-2">
         <UserButton appearance={{ elements: { userButtonAvatarBox: "w-8 h-8 rounded-lg" } }} />
 
         <button 
