@@ -139,7 +139,7 @@ export function SidebarContent() {
          <div className="relative group shrink-0">
             <button 
               onClick={() => openUserProfile()}
-              className="relative w-9 h-9 rounded-full overflow-hidden border border-border group-hover:border-primary/50 transition-all duration-300 shadow-sm bg-secondary/20 flex items-center justify-center"
+              className="relative w-9 h-9 rounded-full overflow-hidden border border-border bg-secondary/20 flex items-center justify-center group-hover:border-primary/60 group-hover:shadow-[0_0_20px_rgba(79,70,229,0.4)] transition-all duration-300 shadow-sm"
               title="Manage Account"
             >
               {user?.imageUrl ? (
