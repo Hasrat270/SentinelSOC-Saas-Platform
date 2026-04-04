@@ -11,7 +11,7 @@ export default function DocsPage() {
   const { toast } = useToast();
   const { getToken } = useAuth();
   const [profile, setProfile] = useState<any>(null);
-  const [copied, setCopied] = useState(false);
+  const [copiedId, setCopiedId] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -39,12 +39,10 @@ app.use(sentinelAgent({
   block: true // Enable block-and-redirect flow
 }));`;
 
-  const handleCopy = (text: string) => {
+  const handleCopy = (text: string, id: string) => {
     navigator.clipboard.writeText(text);
-    if (text === codeSnippet) {
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    }
+    setCopiedId(id);
+    setTimeout(() => setCopiedId(null), 2000);
     toast({ title: "Content copied!", variant: "success" });
   };
 
@@ -89,10 +87,10 @@ app.use(sentinelAgent({
                             <span className="text-[9px] md:text-[11px] text-muted-foreground font-bold tracking-[0.2em] uppercase">terminal</span>
                          </div>
                          <button 
-                           onClick={() => handleCopy("npm install sentinel-soc-agent")}
+                           onClick={() => handleCopy("npm install sentinel-soc-agent", "step1")}
                            className="p-1.5 md:p-2 rounded-lg bg-primary/10 hover:bg-primary/20 text-primary transition-all cursor-pointer border border-primary/20"
                          >
-                            <Copy className="w-3.5 h-3.5 md:w-4 md:h-4" />
+                            {copiedId === "step1" ? <Check className="w-3.5 h-3.5 md:w-4 md:h-4" /> : <Copy className="w-3.5 h-3.5 md:w-4 md:h-4" />}
                          </button>
                       </div>
                       <div className="p-4 md:p-8 font-mono text-[10px] md:text-sm tracking-tight md:tracking-normal leading-relaxed bg-card/20">
@@ -130,10 +128,10 @@ app.use(sentinelAgent({
                             <span className="text-[9px] md:text-[11px] text-muted-foreground font-bold tracking-[0.2em] uppercase">app.js</span>
                          </div>
                          <button 
-                           onClick={() => handleCopy(codeSnippet)}
+                           onClick={() => handleCopy(codeSnippet, "step2")}
                            className="p-1.5 md:p-2 rounded-lg bg-primary/10 hover:bg-primary/20 text-primary transition-all cursor-pointer border border-primary/20"
                          >
-                            {copied ? <Check className="w-3.5 h-3.5 md:w-4 md:h-4" /> : <Copy className="w-3.5 h-3.5 md:w-4 md:h-4" />}
+                            {copiedId === "step2" ? <Check className="w-3.5 h-3.5 md:w-4 md:h-4" /> : <Copy className="w-3.5 h-3.5 md:w-4 md:h-4" />}
                          </button>
                       </div>
 
