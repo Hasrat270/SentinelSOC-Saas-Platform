@@ -120,22 +120,19 @@ function ThreatLogsContent() {
 
   return (
     <div className="space-y-8 animate-in fade-in slide-in-from-bottom-2 duration-700">
-      <div className="flex flex-col gap-5">
-        <div className="space-y-2">
-          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground uppercase">Live Threat Feed</h1>
-          <p className="text-muted-foreground text-[10px] sm:text-sm leading-relaxed max-w-2xl font-medium uppercase tracking-tighter">
-            Real-time analysis and historical logging of intercepted malicious payloads.
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">Live Threat Feed</h1>
+          <p className="text-muted-foreground mt-1 sm:mt-2 text-[10px] sm:text-sm leading-relaxed max-w-2xl">
+            Real-time analysis and historical logging.
           </p>
         </div>
-        
-        {/* Repositioned Badge: Under description on mobile, Integrated on Desktop */}
         <div className={cn(
           "w-fit flex items-center gap-2 px-3 py-1.5 rounded-lg border font-bold text-[9px] sm:text-[10px] uppercase tracking-widest transition-all duration-500",
-          connected ? "bg-primary/10 border-primary/20 text-primary shadow-lg shadow-primary/10" : "bg-red-500/10 border-red-500/20 text-red-500"
+          connected ? "bg-primary/10 border-primary/20 text-primary" : "bg-red-500/10 border-red-500/20 text-red-500"
         )}>
           <span className={cn("w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full", connected ? "bg-primary animate-pulse" : "bg-red-500")} />
           {connected ? "Socket Active" : "Disconnected"}
-          <span className="ml-1 opacity-40 font-mono">Stream: Live</span>
         </div>
       </div>
 
@@ -155,7 +152,7 @@ function ThreatLogsContent() {
               <div className="min-w-0">
                 <CardTitle className="text-foreground text-[10px] sm:text-[11px] font-bold uppercase tracking-widest truncate">Security Events</CardTitle>
                 <p className="text-[9px] sm:text-[10px] text-muted-foreground mt-0.5 uppercase tracking-tight">
-                  {total} Records Synchronized
+                  {total} Records
                 </p>
               </div>
             </div>
@@ -175,8 +172,8 @@ function ThreatLogsContent() {
                 <th className="text-left py-4 px-4 sm:px-6 font-bold uppercase tracking-widest text-[9px] sm:text-[10px]">Vector</th>
                 <th className="text-left py-4 px-4 sm:px-6 font-bold uppercase tracking-widest text-[9px] sm:text-[10px]">Identity</th>
                 <th className="text-left py-4 px-4 sm:px-6 font-bold uppercase tracking-widest text-[9px] sm:text-[10px]">Status</th>
-                <th className="hidden lg:table-cell text-left py-4 px-6 font-bold uppercase tracking-widest text-[10px]">Payload Fragment</th>
-                <th className="text-right py-4 px-4 sm:px-6 font-bold uppercase tracking-widest text-[9px] sm:text-[10px]">Time Detected</th>
+                <th className="hidden lg:table-cell text-left py-4 px-6 font-bold uppercase tracking-widest text-[10px]">Payload</th>
+                <th className="text-right py-4 px-4 sm:px-6 font-bold uppercase tracking-widest text-[9px] sm:text-[10px]">Time</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-border">
@@ -201,7 +198,7 @@ function ThreatLogsContent() {
                     </span>
                   </td>
                   <td className="hidden lg:table-cell py-4 px-6">
-                    <div className="max-w-[200px] truncate font-mono text-[10px] text-muted-foreground opacity-60">
+                    <div className="max-w-[200px] truncate font-mono text-[10px] text-muted-foreground">
                       {log.payload || "N/A"}
                     </div>
                   </td>
@@ -217,7 +214,7 @@ function ThreatLogsContent() {
         <CardFooter className="border-t border-border/50 py-4 px-6 flex flex-col sm:flex-row items-center justify-between bg-secondary/10 gap-4">
            <p className="text-[9px] sm:text-[10px] text-muted-foreground font-bold uppercase tracking-widest flex items-center gap-2">
             <Filter className="w-3.5 h-3.5" />
-            Page {page} of {Math.ceil(total / limit) || 1}
+            Page {page} / {Math.ceil(total / limit) || 1}
           </p>
           <div className="flex gap-2 w-full sm:w-auto">
             <Button
