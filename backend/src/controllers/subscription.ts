@@ -19,9 +19,9 @@ export const createPortalSession = async (req: Request, res: Response): Promise<
       return;
     }
 
-    const priceId = process.env.STRIPE_PRICE_ID;
+    const priceId = process.env.STRIPE_PRICE_ID || process.env.PRO_PRICE_ID;
     if (!priceId) {
-      res.status(500).json({ error: 'STRIPE_PRICE_ID is not configured on the server' });
+      res.status(500).json({ error: 'Stripe Price ID (STRIPE_PRICE_ID) is not configured on the server' });
       return;
     }
 
