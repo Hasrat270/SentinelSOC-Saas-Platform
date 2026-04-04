@@ -74,8 +74,8 @@ app.use(sentinelAgent({
                 </div>
              </div>
              
-             <div className="overflow-x-auto border border-border rounded-2xl shadow-2xl custom-scrollbar flex flex-col">
-                <div className="min-w-[500px] md:min-w-0 bg-[#0d1117] flex flex-col">
+             <div className="w-full overflow-x-auto border border-border rounded-2xl shadow-2xl custom-scrollbar flex flex-col">
+                <div className="min-w-[600px] md:min-w-0 bg-[#0d1117] flex flex-col">
                    <div className="bg-card/80 border-b border-border px-4 md:px-6 py-3 md:py-4 flex items-center justify-between select-none">
                       <div className="flex gap-1.5 md:gap-2">
                          <div className="w-2.5 h-2.5 md:w-3 md:h-3 rounded-full bg-red-500/50" />
@@ -113,7 +113,7 @@ app.use(sentinelAgent({
                 </div>
              </div>
              
-             <div className="overflow-x-auto border border-border rounded-2xl shadow-2xl custom-scrollbar flex flex-col">
+             <div className="w-full overflow-x-auto border border-border rounded-2xl shadow-2xl custom-scrollbar flex flex-col">
                 <div className="min-w-[600px] md:min-w-0 bg-[#0d1117] flex flex-col">
                    <div className="bg-card/80 border-b border-border px-4 md:px-6 py-3 md:py-4 flex items-center justify-between select-none">
                       <div className="flex gap-1.5 md:gap-2">
