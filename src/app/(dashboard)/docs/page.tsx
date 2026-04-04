@@ -208,9 +208,9 @@ app.use(sentinelAgent({
              </div>
              <div className="space-y-2">
                 <p className="text-sm font-black text-foreground uppercase tracking-widest leading-none">Developer Best Practice</p>
-                <p className="text-xs text-muted-foreground mt-3 leading-relaxed max-w-2xl font-medium">
-                   For maximum security, never hardcode your <code className="bg-primary/20 px-2 py-1 rounded-md text-primary font-mono font-bold tracking-normal">apiKey</code> in production code. 
-                   We strongly recommend using environment variables (e.g., <code className="bg-primary/20 px-2 py-1 rounded-md text-primary font-mono font-bold">process.env.SENTINEL_API_KEY</code>) to manage your credentials safely.
+                <p className="text-xs text-muted-foreground mt-3 leading-loose max-w-2xl font-medium">
+                   For maximum security, never hardcode your <code className="bg-primary/20 px-2 py-0.5 rounded-md text-primary font-mono font-bold tracking-normal">apiKey</code> in production code. 
+                   We strongly recommend using environment variables (e.g., <code className="bg-primary/20 px-2 py-0.5 rounded-md text-primary font-mono font-bold">process.env.SENTINEL_API_KEY</code>) to manage your credentials safely.
                 </p>
              </div>
           </div>
