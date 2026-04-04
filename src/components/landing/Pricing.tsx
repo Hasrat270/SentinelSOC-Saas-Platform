@@ -61,7 +61,7 @@ export default function Pricing() {
             <div className="mb-8">
               <h3 className="text-xl font-bold mb-2">Enterprise Pro</h3>
               <div className="flex items-baseline gap-1">
-                <span className="text-4xl font-bold">$29</span>
+                <span className="text-4xl font-bold">$10</span>
                 <span className="text-muted-foreground">/mo</span>
               </div>
             </div>
