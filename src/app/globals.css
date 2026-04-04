@@ -123,65 +123,96 @@
 
 
 /* Premium Vibrant Toast Overhaul (Global Overrides) */
+/* This section handles all toast styling centrally to avoid redundancies and production issues */
 html body [data-sonner-toast] {
-  --radius: 12px;
-  border-width: 2px !important;
+  --radius: 14px;
+  background-color: #0f172a; /* Default background */
+  border: 2px solid rgba(255, 255, 255, 0.1) !important;
   padding: 16px !important;
-  font-weight: 700 !important;
   font-family: var(--font-sans) !important;
-  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.7) !important;
-  background-color: #0f172a !important;
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5) !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
   opacity: 1 !important;
   visibility: visible !important;
 }
 
 [data-sonner-toast] [data-title] {
-  font-size: 0.95rem !important;
-  font-weight: 800 !important;
+  font-size: 0.9rem !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.01em !important;
+  color: #ffffff !important;
 }
 
 [data-sonner-toast] [data-description] {
   font-size: 0.8rem !important;
   font-weight: 500 !important;
-  opacity: 0.95 !important;
-  color: white !important;
+  opacity: 0.8 !important;
+  color: rgba(255, 255, 255, 0.9) !important;
 }
 
-[data-sonner-toast][data-type='success'], 
-.toast[data-type='success'] {
+/* Success Toast - Vibrant Emerald */
+[data-sonner-toast][data-type='success'] {
   background: #059669 !important; /* emerald-600 */
   border-color: #34d399 !important; /* emerald-400 */
-  color: #ffffff !important;
-  box-shadow: 0 0 30px rgba(16, 185, 129, 0.4) !important;
+  box-shadow: 0 0 40px -10px rgba(16, 185, 129, 0.5) !important;
 }
 
-[data-sonner-toast][data-type='error'],
-.toast[data-type='error'] {
+/* Error Toast - Vibrant Rose */
+[data-sonner-toast][data-type='error'] {
   background: #dc2626 !important; /* rose-600 */
   border-color: #fb7185 !important; /* rose-400 */
-  color: #ffffff !important;
-  box-shadow: 0 0 30px rgba(244, 63, 94, 0.4) !important;
+  box-shadow: 0 0 40px -10px rgba(244, 63, 94, 0.5) !important;
 }
 
-[data-sonner-toast][data-type='info'],
-.toast[data-type='info'] {
+/* Info Toast - Vibrant Sky */
+[data-sonner-toast][data-type='info'] {
   background: #0284c7 !important; /* sky-600 */
   border-color: #38bdf8 !important; /* sky-400 */
-  color: #ffffff !important;
-  box-shadow: 0 0 30px rgba(14, 165, 233, 0.4) !important;
+  box-shadow: 0 0 40px -10px rgba(14, 165, 233, 0.5) !important;
 }
 
-[data-sonner-toast][data-type='warning'],
-.toast[data-type='warning'] {
+/* Warning Toast - Vibrant Amber */
+[data-sonner-toast][data-type='warning'] {
   background: #d97706 !important; /* amber-600 */
   border-color: #fbbf24 !important; /* amber-400 */
-  color: #ffffff !important;
-  box-shadow: 0 0 30px rgba(245, 158, 11, 0.4) !important;
+  box-shadow: 0 0 40px -10px rgba(245, 158, 11, 0.5) !important;
 }
 
-/* Ensure icons are always white in vibrant mode */
+/* Icons Overrides */
 [data-sonner-toast] [data-icon] svg {
-  color: #fff !important;
+  color: #ffffff !important;
   width: 20px !important;
   height: 20px !important;
+  stroke-width: 2.5px !important;
+}
+
+/* Close Button Overrides */
+[data-sonner-toast] [data-close-button] {
+  background: rgba(255, 255, 255, 0.1) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  color: #fff !important;
+  transition: all 0.2s ease !important;
+}
+
+[data-sonner-toast] [data-close-button]:hover {
+  background: rgba(255, 255, 255, 0.2) !important;
+  transform: scale(1.1) !important;
+}
+
+/* Action Button */
+[data-sonner-toast] [data-button] {
+  background: #fff !important;
+  color: #000 !important;
+  font-weight: 700 !important;
+  font-size: 0.75rem !important;
+  border-radius: 8px !important;
+  padding: 8px 12px !important;
+}
+
+/* Mobile Optimizations */
+@media (max-width: 640px) {
+  html body [data-sonner-toast] {
+    width: calc(100vw - 32px) !important;
+    margin: 0 16px 16px 16px !important;
+  }
 }
