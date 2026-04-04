@@ -18,7 +18,7 @@ export function UserProfile({ variant = "sidebar", className }: UserProfileProps
       <div className={cn("flex items-center justify-between p-4 bg-secondary/30 border border-border rounded-xl group transition-all", className)}>
         <div className="flex items-center gap-4">
           <div className="relative shrink-0 flex items-center justify-center">
-            <div className="w-12 h-12 rounded-full overflow-hidden border border-border/50 shadow-md relative bg-secondary/20 flex items-center justify-center group-hover:border-primary/60 group-hover:shadow-[0_0_20px_rgba(79,70,229,0.4)] transition-all duration-300">
+            <div className="w-12 h-12 rounded-full overflow-hidden border border-border/50 shadow-md relative bg-secondary/20 flex items-center justify-center transition-all duration-300">
                <UserButton appearance={{ elements: { userButtonAvatarBox: "w-12 h-12", userButtonTrigger: "outline-none" } }} />
                
                {/* Flash/Shine Effect */}
