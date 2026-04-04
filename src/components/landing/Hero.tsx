@@ -39,7 +39,7 @@ export default function Hero() {
 
         {/* Premium Dashboard Mockup Mini */}
         <div className="mt-16 md:mt-20 relative max-w-5xl mx-auto border border-border/40 rounded-2xl bg-gradient-to-b from-card/80 to-background p-1.5 md:p-2 shadow-2xl overflow-hidden group">
-          <div className="bg-background rounded-xl h-72 md:h-[450px] flex flex-col border border-border/20 overflow-hidden relative">
+          <div className="bg-background rounded-xl h-80 md:h-[450px] flex flex-col border border-border/20 overflow-hidden relative">
             <div className="absolute inset-0 bg-grid-slate-900/[0.04] bg-[bottom_center] [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))]" />
             
             {/* Mockup Title Bar */}
@@ -102,16 +102,16 @@ export default function Hero() {
                 </div>
 
                 {/* Log Entry 3: Secure */}
-                <div className="p-3 rounded-lg border border-border/40 bg-card/40 flex items-center justify-between group-hover:translate-x-1 transition-transform cursor-default delay-75">
-                  <div className="flex items-center gap-3">
+                <div className="p-2 md:p-3 rounded-lg border border-border/40 bg-card/40 flex items-center justify-between group-hover:translate-x-1 transition-transform cursor-default delay-75">
+                  <div className="flex items-center gap-2 md:gap-3">
                     <span className="text-emerald-500">GET</span>
                     <span className="text-muted-foreground">/dashboard/threat-logs</span>
                   </div>
                   <span className="text-[9px] px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-500 border border-emerald-500/20">200 OK</span>
                 </div>
 
-                {/* Log Entry 4: BLOCKED! */}
-                <div className="p-3 rounded-lg border border-red-500/30 bg-red-500/5 flex items-center justify-between">
+                {/* Log Entry 4: BLOCKED! (Hidden on mobile to prevent overflow) */}
+                <div className="hidden sm:flex p-3 rounded-lg border border-red-500/30 bg-red-500/5 items-center justify-between">
                   <div className="flex items-center gap-3">
                     <span className="text-red-500">GET</span>
                     <span className="text-foreground">/etc/passwd</span>
