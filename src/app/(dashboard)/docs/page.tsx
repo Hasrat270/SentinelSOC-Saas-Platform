@@ -45,7 +45,7 @@ app.use(sentinelAgent({
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     }
-    toast({ title: "Content copied!", variant: "success" });
+    toast({ title: "Key copied to clipboard", variant: "copy" });
   };
 
   return (

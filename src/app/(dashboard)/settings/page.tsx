@@ -43,7 +43,7 @@ export default function SettingsPage() {
   const copyToClipboard = () => {
     if (!primaryKey) return;
     navigator.clipboard.writeText(primaryKey);
-    toast({ title: "Primary API Key copied to clipboard", variant: "success" });
+    toast({ title: "Primary API Key copied to clipboard", variant: "copy" });
   };
 
   const [upgrading, setUpgrading] = useState(false);

@@ -31,13 +31,17 @@ const toastVariants = cva(
       variant: {
         default: "border-border bg-card/80 text-foreground",
         destructive:
-          "destructive group border-[#fb7185]/50 bg-[#dc2626]/90 text-white shadow-[#f43f5e33] glow-red",
+          "destructive group border-rose-500/50 bg-rose-600/90 text-white shadow-rose-500/20 backdrop-blur-xl",
         success: 
-          "success group border-[#34d399]/50 bg-[#059669]/90 text-white shadow-[#10b98133] glow-green",
+          "success group border-emerald-500/50 bg-emerald-600/90 text-white shadow-emerald-500/20 backdrop-blur-xl",
         warning:
-          "warning group border-[#fbbf24]/50 bg-[#d97706]/90 text-white shadow-[#f59e0b33]",
+          "warning group border-amber-500/50 bg-amber-600/90 text-white shadow-amber-500/20 backdrop-blur-xl",
         info:
-          "info group border-[#38bdf8]/50 bg-[#0284c7]/90 text-white shadow-[#0ea5e933]",
+          "info group border-sky-500/50 bg-sky-600/90 text-white shadow-sky-500/20 backdrop-blur-xl",
+        threat:
+          "threat group border-red-500 bg-red-700/95 text-white shadow-red-500/40 animate-pulse-subtle border-2 backdrop-blur-2xl",
+        copy:
+          "copy group border-indigo-500/50 bg-indigo-600/90 text-white shadow-indigo-500/20 backdrop-blur-xl",
       },
     },
     defaultVariants: {

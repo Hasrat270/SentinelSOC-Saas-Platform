@@ -61,17 +61,17 @@ export default function ThreatLogsPage() {
 
         socket.on("disconnect", () => setConnected(false));
 
-        socket.on("new-threat", (threat: ThreatLog) => {
-          setLogs((prev) => {
-            if (prev.find(l => l._id === threat._id)) return prev;
-            return [threat, ...prev].slice(0, 100);
-          });
-          toast({
-            title: `${threat.threatType} detected`,
-            description: `From ${threat.attackerIp}`,
-            variant: "destructive"
-          });
-        });
+    socket.on("new-threat", (threat: ThreatLog) => {
+      setLogs((prev) => {
+        if (prev.find(l => l._id === threat._id)) return prev;
+        return [threat, ...prev].slice(0, 100);
+      });
+      toast({
+        title: `${threat.threatType} detected`,
+        description: `From ${threat.attackerIp}`,
+        variant: "threat"
+      });
+    });
 
         socket.on("limit-reached", (data) => {
           toast({

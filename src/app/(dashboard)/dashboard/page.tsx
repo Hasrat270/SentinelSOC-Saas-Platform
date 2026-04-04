@@ -149,7 +149,7 @@ function DashboardContent() {
       toast({
         title: `Security Alert: ${newThreat.threatType}`,
         description: `Source: ${newThreat.attackerIp}`,
-        variant: "destructive"
+        variant: "threat"
       });
       setStats(prev => {
         if (!prev) return null;

@@ -9,7 +9,7 @@ import {
   ToastViewport,
 } from "@/components/ui/toast"
 import { useToast } from "@/hooks/use-toast"
-import { CheckCircle2, AlertTriangle, AlertCircle, Info } from "lucide-react"
+import { CheckCircle2, AlertTriangle, AlertCircle, Info, Copy, ShieldAlert } from "lucide-react"
 
 export function Toaster() {
   const { toasts } = useToast()
@@ -23,6 +23,8 @@ export function Toaster() {
               <div className="mt-0.5 shrink-0">
                 {variant === "success" && <CheckCircle2 className="h-4 w-4 text-white" />}
                 {variant === "destructive" && <AlertCircle className="h-4 w-4 text-white" />}
+                {variant === "threat" && <ShieldAlert className="h-4 w-4 text-white animate-pulse" />}
+                {variant === "copy" && <Copy className="h-4 w-4 text-white" />}
                 {variant === "warning" && <AlertTriangle className="h-4 w-4 text-white" />}
                 {variant === "info" && <Info className="h-4 w-4 text-white" />}
                 {!variant && <Info className="h-4 w-4 text-muted-foreground" />}
