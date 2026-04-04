@@ -249,11 +249,11 @@ function DashboardContent() {
         </div>
       )}
 
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6">
-        <div className="space-y-1">
-          <h1 className="text-xl sm:text-2xl font-bold text-white uppercase tracking-tight">System Status</h1>
-          <p className="text-muted-foreground text-[8px] sm:text-[10px] font-bold uppercase tracking-widest leading-relaxed">
-            Real-time monitoring active for <span className="font-mono text-primary font-bold">SOC-{profile?.tenantId.slice(-6).toUpperCase()}</span>
+      <div className="flex justify-between items-center">
+        <div>
+          <h1 className="text-2xl font-bold text-white uppercase tracking-tight">System Status</h1>
+          <p className="text-muted-foreground text-[10px] mt-1 font-bold uppercase tracking-widest">
+            Real-time security monitoring active for <span className="font-mono text-primary font-bold">SOC-{profile?.tenantId.slice(-6).toUpperCase()}</span>
           </p>
         </div>
         
