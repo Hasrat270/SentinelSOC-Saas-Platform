@@ -164,7 +164,7 @@ export function SidebarContent() {
          </button>
       </div>
     </>
-  );
+  );bdsabdjsbads
 }
 
 function userUser() {
@@ -174,8 +174,13 @@ function userUser() {
 
 export default function Sidebar() {
   return (
-    <aside className="hidden lg:flex sticky top-0 h-screen w-64 bg-card border-r border-border px-4 py-8 flex-col shrink-0 transition-colors duration-500">
-      <SidebarContent />
-    </aside>
+    <>
+      {/* Spacer to maintain layout flow on desktop */}
+      <div className="hidden lg:block w-64 shrink-0" />
+      
+      <aside className="hidden lg:flex fixed inset-y-0 left-0 z-30 w-64 bg-card border-r border-border px-4 py-8 flex-col transition-colors duration-500">
+        <SidebarContent />
+      </aside>
+    </>
   );
 }
