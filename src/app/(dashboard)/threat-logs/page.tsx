@@ -69,7 +69,7 @@ export default function ThreatLogsPage() {
       toast({
         title: `${threat.threatType} detected`,
         description: `From ${threat.attackerIp}`,
-        variant: "threat"
+        variant: threat.severity === "High" ? "threat" : threat.severity === "Medium" ? "warning" : "low"
       });
     });
 

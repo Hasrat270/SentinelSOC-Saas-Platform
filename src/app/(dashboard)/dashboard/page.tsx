@@ -149,7 +149,7 @@ function DashboardContent() {
       toast({
         title: `Security Alert: ${newThreat.threatType}`,
         description: `Source: ${newThreat.attackerIp}`,
-        variant: "threat"
+        variant: newThreat.severity === "High" ? "threat" : newThreat.severity === "Medium" ? "warning" : "low"
       });
       setStats(prev => {
         if (!prev) return null;
@@ -226,7 +226,7 @@ function DashboardContent() {
       if (res.ok) {
         const data = await res.json();
         setProfile(prev => prev ? { ...prev, apiKeys: data.apiKeys } : null);
-        toast({ title: "API Key revoked", variant: "success" });
+        toast({ title: "API Key revoked", variant: "destructive" });
       }
     } catch (err) {
       toast({ title: "Failed to revoke key", variant: "destructive" });

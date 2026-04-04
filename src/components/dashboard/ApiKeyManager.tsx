@@ -39,7 +39,7 @@ export function ApiKeyManager({
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text);
     setCopiedKey(text);
-    toast({ title: "Key copied to clipboard", variant: "copy" });
+    toast({ title: "Key copied to clipboard", variant: "success" });
     setTimeout(() => setCopiedKey(null), 2000);
   };
 

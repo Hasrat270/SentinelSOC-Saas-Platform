@@ -35,13 +35,15 @@ const toastVariants = cva(
         success: 
           "success group border-emerald-500/50 bg-emerald-600/90 text-white shadow-emerald-500/20 backdrop-blur-xl",
         warning:
-          "warning group border-amber-500/50 bg-amber-600/90 text-white shadow-amber-500/20 backdrop-blur-xl",
+          "warning group border-orange-500/50 bg-orange-600/90 text-white shadow-orange-500/20 backdrop-blur-xl",
         info:
           "info group border-sky-500/50 bg-sky-600/90 text-white shadow-sky-500/20 backdrop-blur-xl",
         threat:
           "threat group border-red-500 bg-red-700/95 text-white shadow-red-500/40 animate-pulse-subtle border-2 backdrop-blur-2xl",
         copy:
-          "copy group border-indigo-500/50 bg-indigo-600/90 text-white shadow-indigo-500/20 backdrop-blur-xl",
+          "copy group border-indigo-500/50 bg-indigo-600/90 text-white shadow-indigo-500/20 backdrop-blur-xl font-bold",
+        low:
+          "low group border-slate-200/50 bg-white/90 text-slate-900 shadow-slate-200/20 backdrop-blur-xl font-bold",
       },
     },
     defaultVariants: {
