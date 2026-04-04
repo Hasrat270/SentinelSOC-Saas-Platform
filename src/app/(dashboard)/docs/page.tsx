@@ -51,14 +51,14 @@ app.use(sentinelAgent({
   return (
     <div className="max-w-4xl mx-auto space-y-16 animate-in fade-in slide-in-from-bottom-4 duration-1000 pb-20">
        {/* Hero Section */}
-       <div className="text-center space-y-4">
+       <div className="text-center lg:text-left space-y-4">
          <div className="inline-flex items-center justify-center p-3 rounded-2xl bg-primary/10 border border-primary/20 mb-4">
            <BookOpen className="w-8 h-8 text-primary" />
          </div>
          <h1 className="text-4xl font-extrabold tracking-tight text-foreground uppercase">
            Developer <span className="text-primary">Docs</span>
          </h1>
-         <p className="text-muted-foreground max-w-2xl mx-auto text-sm font-bold uppercase tracking-widest leading-relaxed">
+         <p className="text-muted-foreground max-w-2xl mx-auto lg:mx-0 text-sm font-bold uppercase tracking-widest leading-relaxed">
            Connect your infrastructure to the SentinelSOC Real-Time Engine in under 2 minutes.
          </p>
        </div>
