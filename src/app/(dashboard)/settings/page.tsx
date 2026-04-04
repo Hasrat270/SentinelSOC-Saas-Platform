@@ -139,7 +139,7 @@ export default function SettingsPage() {
               <Button 
                 onClick={handleUpgrade}
                 disabled={upgrading || loading}
-                className="w-full bg-primary hover:bg-primary/90 text-white font-bold text-[11px] uppercase tracking-widest h-10 transition-all shadow-lg shadow-primary/20"
+                className="w-full bg-primary hover:bg-primary/90 text-white font-bold text-[10px] md:text-[11px] uppercase tracking-widest h-8 md:h-10 transition-all shadow-lg shadow-primary/20"
               >
                 {upgrading ? "Provisioning..." : "Upgrade to PRO"}
               </Button>

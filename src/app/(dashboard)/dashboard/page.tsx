@@ -278,13 +278,13 @@ function DashboardContent() {
                }
              }}
              className={cn(
-               "px-5 py-2.5 text-white text-[10px] font-bold rounded-lg transition-all shadow-lg flex items-center gap-2 group uppercase tracking-widest cursor-pointer",
+               "px-3 py-1.5 md:px-5 md:py-2.5 text-white text-[9px] md:text-[10px] font-bold rounded-lg transition-all shadow-lg flex items-center gap-2 group uppercase tracking-widest cursor-pointer whitespace-nowrap",
                isLimitReached 
                  ? "bg-red-600 animate-pulse shadow-red-500/20" 
                  : "bg-primary hover:bg-primary/90 shadow-primary/20"
              )}
            >
-             {loading ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Zap className="w-3.5 h-3.5 group-hover:fill-current transition-all" />}
+             {loading ? <Loader2 className="w-3 h-3 md:w-3.5 md:h-3.5 animate-spin" /> : <Zap className="w-3 h-3 md:w-3.5 md:h-3.5 group-hover:fill-current transition-all" />}
              Upgrade to PRO
            </button>
         )}
