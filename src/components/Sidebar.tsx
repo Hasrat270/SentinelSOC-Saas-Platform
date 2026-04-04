@@ -3,19 +3,15 @@
 import * as React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { UserButton, useClerk, useAuth } from "@clerk/nextjs";
-import { useTheme } from "next-themes";
+import { useClerk, useAuth, useUser } from "@clerk/nextjs";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import {
   LayoutDashboard,
   ShieldAlert,
   Settings,
-  Zap,
   BookOpen,
-  Moon,
   Shield,
-  Palette,
   LogOut,
   Loader2,
 } from "lucide-react";
@@ -35,7 +31,8 @@ interface TenantProfile {
 }
 
 export default function Sidebar() {
-  const { signOut } = useClerk();
+  const { signOut, openUserProfile } = useClerk();
+  const { user } = useUser();
   const { getToken } = useAuth();
   const { toast } = useToast();
   const pathname = usePathname();
@@ -55,7 +52,6 @@ export default function Sidebar() {
       }
     };
     fetchProfile();
-    // Refresh every 30 seconds for live updates
     const interval = setInterval(fetchProfile, 30000);
     return () => clearInterval(interval);
   }, [getToken]);
@@ -67,7 +63,6 @@ export default function Sidebar() {
       description: "Securely ending your SOC session.",
     });
     
-    // Tiny delay for visual feedback
     setTimeout(() => {
       signOut({ redirectUrl: "/" });
     }, 1000);
@@ -80,7 +75,7 @@ export default function Sidebar() {
         <div className="flex items-center justify-center w-9 h-9 rounded-lg bg-primary shadow-lg shadow-primary/20">
           <Shield className="w-5 h-5 text-white" />
         </div>
-        <span className="text-xl font-bold tracking-tight text-foreground">
+        <span className="text-xl font-bold tracking-tight text-foreground whitespace-nowrap">
           Sentinel<span className="text-primary">SOC</span>
         </span>
       </div>
@@ -137,27 +132,31 @@ export default function Sidebar() {
           </div>
       </div>
 
-      {/* Simplified User Section */}
+      {/* User Section - Direct Profile Access (No Dropdown) */}
       <div className="pt-6 border-t border-border flex items-center gap-3 px-2">
-         <UserButton appearance={{ 
-           elements: { 
-             userButtonAvatarBox: "w-8 h-8 rounded-lg",
-             userButtonPopoverActionButton__signOut: "hidden" 
-           } 
-         }}>
-           <UserButton.MenuItems>
-             <UserButton.Action label="manageAccount" />
-           </UserButton.MenuItems>
-         </UserButton>
+         <button 
+           onClick={() => openUserProfile()}
+           className="relative group focus:outline-none"
+           title="Manage Account"
+         >
+           <div className="w-8 h-8 rounded-lg overflow-hidden border border-border hover:border-primary/50 transition-all duration-300 shadow-sm bg-secondary/20 flex items-center justify-center">
+             {user?.imageUrl ? (
+               <img src={user.imageUrl} alt="Profile" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+             ) : (
+               <div className="w-full h-full bg-secondary flex items-center justify-center text-[10px] font-bold text-muted-foreground">SOC</div>
+             )}
+           </div>
+           <div className="absolute inset-0 rounded-lg bg-primary/10 opacity-0 group-hover:opacity-100 transition-opacity" />
+         </button>
 
-        <button 
-          onClick={handleLogout}
-          disabled={isLoggingOut}
-          className="flex-1 flex items-center gap-2.5 p-2 rounded-lg text-muted-foreground hover:text-red-500 hover:bg-red-500/5 transition-all duration-200 group border border-transparent hover:border-red-500/10"
-        >
-           {isLoggingOut ? <Loader2 className="w-4 h-4 animate-spin text-red-500" /> : <LogOut className="w-4 h-4 transition-transform group-hover:translate-x-1" />}
-           <span className="text-[10px] font-bold uppercase tracking-widest leading-none">Logout</span>
-        </button>
+         <button 
+           onClick={handleLogout}
+           disabled={isLoggingOut}
+           className="flex-1 flex items-center gap-2.5 p-2 rounded-lg text-muted-foreground hover:text-red-500 hover:bg-red-500/5 transition-all duration-200 group border border-transparent hover:border-red-500/10"
+         >
+            {isLoggingOut ? <Loader2 className="w-4 h-4 animate-spin text-red-500" /> : <LogOut className="w-4 h-4 transition-transform group-hover:translate-x-1" />}
+            <span className="text-[10px] font-bold uppercase tracking-widest leading-none">Logout</span>
+         </button>
       </div>
     </aside>
   );
