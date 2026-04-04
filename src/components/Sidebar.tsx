@@ -16,7 +16,10 @@ import {
   Moon,
   Shield,
   Palette,
+  LogOut,
+  Loader2,
 } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 const navLinks = [
   { href: "/dashboard", label: "Overview", icon: LayoutDashboard },
@@ -32,10 +35,12 @@ interface TenantProfile {
 }
 
 export default function Sidebar() {
-  const { openUserProfile } = useClerk();
+  const { openUserProfile, signOut } = useClerk();
   const { getToken } = useAuth();
+  const { toast } = useToast();
   const pathname = usePathname();
   const [profile, setProfile] = useState<TenantProfile | null>(null);
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -54,6 +59,19 @@ export default function Sidebar() {
     const interval = setInterval(fetchProfile, 30000);
     return () => clearInterval(interval);
   }, [getToken]);
+
+  const handleLogout = async () => {
+    setIsLoggingOut(true);
+    toast({
+      title: "Signing out...",
+      description: "Securely ending your SOC session.",
+    });
+    
+    // Tiny delay for visual feedback
+    setTimeout(() => {
+      signOut({ redirectUrl: "/" });
+    }, 1000);
+  };
 
   return (
     <aside className="sticky top-0 h-screen w-64 bg-card border-r border-border px-4 py-8 flex flex-col shrink-0 transition-colors duration-500">
@@ -119,8 +137,8 @@ export default function Sidebar() {
           </div>
       </div>
 
-      {/* User */}
-      <div className="pt-6 border-t border-border">
+      {/* User Section with Logout */}
+      <div className="pt-6 border-t border-border space-y-1">
         <div 
           onClick={() => openUserProfile()}
           className="flex items-center gap-3 p-2 rounded-lg hover:bg-secondary/50 transition-all duration-200 group cursor-pointer"
@@ -131,6 +149,18 @@ export default function Sidebar() {
             <span className="text-[11px] text-muted-foreground tracking-tight">Enterprise Console</span>
           </div>
         </div>
+
+        <button 
+          onClick={handleLogout}
+          disabled={isLoggingOut}
+          className="w-full flex items-center justify-between gap-3 p-2.5 rounded-lg text-muted-foreground hover:text-red-500 hover:bg-red-500/5 transition-all duration-200 group border border-transparent hover:border-red-500/10"
+        >
+          <div className="flex items-center gap-3">
+             {isLoggingOut ? <Loader2 className="w-4 h-4 animate-spin text-red-500" /> : <LogOut className="w-4 h-4 transition-transform group-hover:translate-x-1" />}
+             <span className="text-xs font-bold uppercase tracking-widest leading-none">Logout</span>
+          </div>
+          <span className="text-[9px] font-mono opacity-0 group-hover:opacity-60 transition-opacity">EXIT</span>
+        </button>
       </div>
     </aside>
   );
