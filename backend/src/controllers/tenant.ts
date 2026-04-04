@@ -19,6 +19,8 @@ export const getTenantMe = async (req: Request, res: Response): Promise<void> =>
       const initialKey = `sentinel_${randomBytes(16).toString('hex')}`;
       tenant = await Tenant.create({
         clerkUserId: userId,
+        // If the frontend passes email in headers or body, we could save it here
+        // For now, we'll let the webhook update it if it finds it
         apiKeys: [{ 
           key: initialKey, 
           name: 'Primary Key',
@@ -28,6 +30,8 @@ export const getTenantMe = async (req: Request, res: Response): Promise<void> =>
         logCount: 0
       });
       console.log(`[SentinelSOC] Created new tenant for user ${userId}`);
+    } else if (!tenant.email) {
+      // Optional: If we had clerkClient, we could fetch and fix missing emails here
     }
 
     res.json({ 

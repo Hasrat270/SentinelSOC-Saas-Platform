@@ -8,6 +8,7 @@ export interface ITenantKey {
 
 export interface ITenant extends Document {
   clerkUserId: string;
+  email?: string;
   apiKeys: ITenantKey[];
   subscriptionPlan: 'FREE' | 'PRO';
   logCount: number;
@@ -21,6 +22,12 @@ const TenantSchema: Schema = new Schema(
       type: String,
       required: true,
       unique: true,
+      index: true,
+    },
+    email: {
+      type: String,
+      unique: true,
+      sparse: true,
       index: true,
     },
     apiKeys: [
