@@ -139,7 +139,12 @@ export default function Sidebar() {
 
       {/* Simplified User Section */}
       <div className="pt-6 border-t border-border flex items-center gap-3 px-2">
-         <UserButton appearance={{ elements: { userButtonAvatarBox: "w-8 h-8 rounded-lg" } }}>
+         <UserButton appearance={{ 
+           elements: { 
+             userButtonAvatarBox: "w-8 h-8 rounded-lg",
+             userButtonPopoverActionButton__signOut: "hidden" 
+           } 
+         }}>
            <UserButton.MenuItems>
              <UserButton.Action label="manageAccount" />
            </UserButton.MenuItems>
