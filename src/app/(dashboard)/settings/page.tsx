@@ -5,7 +5,8 @@ import { useAuth } from "@clerk/nextjs";
 import { useToast } from "@/hooks/use-toast";
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Key, Copy, RefreshCw, Eye, EyeOff } from "lucide-react";
+import { Key, Copy, RefreshCw, Eye, EyeOff, Shield } from "lucide-react";
+import { UserProfile } from "@/components/UserProfile";
 
 export default function SettingsPage() {
   const { toast } = useToast();
@@ -193,6 +194,24 @@ export default function SettingsPage() {
           </CardContent>
         </Card>
       </div>
+
+      {/* Identity Card */}
+      <Card className="bg-card border-border shadow-sm overflow-hidden max-w-2xl">
+        <CardHeader className="border-b border-border/50 pb-5">
+          <div className="flex items-center gap-3">
+             <div className="p-2 rounded-lg bg-primary/10 border border-primary/20">
+               <Shield className="w-4.5 h-4.5 text-primary" />
+             </div>
+             <CardTitle className="text-foreground text-[11px] font-bold uppercase tracking-widest">Enterprise Identity</CardTitle>
+          </div>
+        </CardHeader>
+        <CardContent className="pt-6">
+           <UserProfile variant="settings" />
+           <p className="text-[10px] text-muted-foreground mt-4 uppercase tracking-tighter leading-tight italic">
+             Management of security credentials and multi-factor authentication is handled via the cloud authentication provider.
+           </p>
+        </CardContent>
+      </Card>
     </div>
   );
 }

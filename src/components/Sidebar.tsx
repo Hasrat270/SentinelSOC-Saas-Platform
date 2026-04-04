@@ -3,7 +3,8 @@
 import * as React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { UserButton, useClerk, useAuth } from "@clerk/nextjs";
+import { useClerk, useAuth } from "@clerk/nextjs";
+import { UserProfile } from "./UserProfile";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
@@ -35,7 +36,7 @@ interface TenantProfile {
 }
 
 export default function Sidebar() {
-  const { openUserProfile, signOut } = useClerk();
+  const { signOut } = useClerk();
   const { getToken } = useAuth();
   const { toast } = useToast();
   const pathname = usePathname();
@@ -138,17 +139,8 @@ export default function Sidebar() {
       </div>
 
       {/* User Section with Logout */}
-      <div className="pt-6 border-t border-border space-y-1">
-        <div 
-          onClick={() => openUserProfile()}
-          className="flex items-center gap-3 p-2 rounded-lg hover:bg-secondary/50 transition-all duration-200 group cursor-pointer"
-        >
-          <UserButton appearance={{ elements: { userButtonAvatarBox: "w-8 h-8" } }} />
-          <div className="flex flex-col text-left">
-            <span className="text-sm font-semibold text-foreground group-hover:text-primary transition-colors">Account</span>
-            <span className="text-[11px] text-muted-foreground tracking-tight">Enterprise Console</span>
-          </div>
-        </div>
+      <div className="pt-6 border-t border-border space-y-1 text-left">
+        <UserProfile variant="sidebar" />
 
         <button 
           onClick={handleLogout}
