@@ -217,6 +217,3 @@ app.use(sentinelAgent({
     </div>
   );
 }
-    </div>
-  );
-}
