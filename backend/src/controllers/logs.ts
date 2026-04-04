@@ -58,10 +58,14 @@ export const logThreatController = async (req: Request, res: Response): Promise<
     getIO().to(tenant._id.toString()).emit('new-threat', newThreat);
 
     // 4. Return success with threat indicators for the agent
+    // Dynamic redirect URL with query params to show specific threat context to the blocked user
+    const baseUrl = 'https://sentinelsocsaasplatform.vercel.app';
+    const redirectUrl = `${baseUrl}/blocked?threatType=${encodeURIComponent(threatType || 'Suspicious Activity')}&ip=${encodeURIComponent(sourceIp || 'Unknown')}`;
+
     res.status(201).json({ 
       success: true, 
       isThreat: true,
-      redirectUrl: 'https://sentinelsocsaasplatform.vercel.app/blocked',
+      redirectUrl,
       message: 'Threat logged successfully' 
     });
   } catch (error) {
