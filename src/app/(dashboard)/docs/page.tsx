@@ -76,8 +76,8 @@ app.use(sentinelAgent({
                    </div>
                 </div>
                 
-                <div className="w-full max-w-full overflow-x-auto border border-border rounded-2xl shadow-2xl custom-scrollbar flex flex-col">
-                   <div className="min-w-[600px] md:min-w-0 bg-[#0d1117] flex flex-col">
+                <div className="w-full max-w-full overflow-hidden border border-border rounded-2xl shadow-2xl flex flex-col">
+                   <div className="w-full bg-[#0d1117] flex flex-col">
                       <div className="bg-card/80 border-b border-border px-4 md:px-6 py-3 md:py-4 flex items-center justify-between select-none">
                          <div className="flex gap-1.5 md:gap-2">
                             <div className="w-2.5 h-2.5 md:w-3 md:h-3 rounded-full bg-red-500/50" />
@@ -95,8 +95,8 @@ app.use(sentinelAgent({
                             <Copy className="w-3.5 h-3.5 md:w-4 md:h-4" />
                          </button>
                       </div>
-                      <div className="p-5 md:p-8 font-mono text-[12px] md:text-sm leading-relaxed bg-card/20">
-                         <div className="flex items-center gap-3 md:gap-4 whitespace-nowrap">
+                      <div className="p-4 md:p-8 font-mono text-[10px] md:text-sm tracking-tight md:tracking-normal leading-relaxed bg-card/20">
+                         <div className="flex items-start gap-3 md:gap-4 break-all whitespace-pre-wrap">
                             <span className="text-primary/40 font-bold">$</span>
                             <span className="text-foreground font-medium selection:bg-primary/30">npm install <span className="text-primary font-black">sentinel-soc-agent</span></span>
                          </div>
@@ -117,8 +117,8 @@ app.use(sentinelAgent({
                    </div>
                 </div>
                 
-                <div className="w-full max-w-full overflow-x-auto border border-border rounded-2xl shadow-2xl custom-scrollbar flex flex-col">
-                   <div className="min-w-[600px] md:min-w-0 bg-[#0d1117] flex flex-col">
+                <div className="w-full max-w-full overflow-hidden border border-border rounded-2xl shadow-2xl flex flex-col">
+                   <div className="w-full bg-[#0d1117] flex flex-col">
                       <div className="bg-card/80 border-b border-border px-4 md:px-6 py-3 md:py-4 flex items-center justify-between select-none">
                          <div className="flex gap-1.5 md:gap-2">
                             <div className="w-2.5 h-2.5 md:w-3 md:h-3 rounded-full bg-red-500/50" />
@@ -137,35 +137,35 @@ app.use(sentinelAgent({
                          </button>
                       </div>
 
-                      <div className="p-5 md:p-8 font-mono text-[12px] md:text-sm relative leading-relaxed bg-[#020617] text-slate-300">
-                         <div className="space-y-1.5 text-[12px] md:text-[13px]">
-                            <div className="flex gap-4 md:gap-8">
-                               <span className="text-slate-600/50 w-6 text-right select-none font-bold">1</span>
-                               <span className="whitespace-nowrap"><span className="text-purple-400">import</span> &#123; <span className="text-amber-400">sentinelAgent</span> &#125; <span className="text-purple-400">from</span> <span className="text-emerald-400">'sentinel-soc-agent'</span>;</span>
+                      <div className="p-4 md:p-8 font-mono text-[10px] md:text-sm tracking-tight md:tracking-normal relative leading-relaxed bg-[#020617] text-slate-300">
+                         <div className="space-y-1.5">
+                            <div className="flex gap-3 md:gap-8">
+                               <span className="text-slate-600/50 w-5 md:w-6 text-right select-none font-bold">1</span>
+                               <span className="whitespace-pre-wrap break-all"><span className="text-purple-400">import</span> &#123; <span className="text-amber-400">sentinelAgent</span> &#125; <span className="text-purple-400">from</span> <span className="text-emerald-400">'sentinel-soc-agent'</span>;</span>
                             </div>
-                            <div className="flex gap-4 md:gap-8">
-                               <span className="text-slate-600/50 w-6 text-right select-none font-bold">2</span>
-                               <span className="text-slate-500 italic opacity-50 font-medium whitespace-nowrap">// Initialize defense engine</span>
+                            <div className="flex gap-3 md:gap-8">
+                               <span className="text-slate-600/50 w-5 md:w-6 text-right select-none font-bold">2</span>
+                               <span className="text-slate-500 italic opacity-50 font-medium whitespace-pre-wrap break-all">// Initialize defense engine</span>
                             </div>
-                            <div className="flex gap-4 md:gap-8">
-                               <span className="text-slate-600/50 w-6 text-right select-none font-bold">3</span>
-                               <span className="whitespace-nowrap"><span className="text-foreground">app</span>.<span className="text-amber-400">use</span>(<span className="text-amber-400">sentinelAgent</span>(&#123;</span>
+                            <div className="flex gap-3 md:gap-8">
+                               <span className="text-slate-600/50 w-5 md:w-6 text-right select-none font-bold">3</span>
+                               <span className="whitespace-pre-wrap break-all"><span className="text-foreground">app</span>.<span className="text-amber-400">use</span>(<span className="text-amber-400">sentinelAgent</span>(&#123;</span>
                             </div>
-                            <div className="flex gap-4 md:gap-8">
-                               <span className="text-slate-600/50 w-6 text-right select-none font-bold">4</span>
-                               <span className="ml-4 md:ml-8 whitespace-nowrap"><span className="text-foreground">apiKey</span>: <span className="text-emerald-400">"{apiKey}"</span>,</span>
+                            <div className="flex gap-3 md:gap-8">
+                               <span className="text-slate-600/50 w-5 md:w-6 text-right select-none font-bold">4</span>
+                               <span className="ml-3 md:ml-8 whitespace-pre-wrap break-all"><span className="text-foreground">apiKey</span>: <span className="text-emerald-400">"{apiKey}"</span>,</span>
                             </div>
-                            <div className="flex gap-4 md:gap-8">
-                               <span className="text-slate-600/50 w-6 text-right select-none font-bold">5</span>
-                               <span className="ml-4 md:ml-8 whitespace-nowrap"><span className="text-foreground">endpoint</span>: <span className="text-emerald-400">"{endpoint}"</span>,</span>
+                            <div className="flex gap-3 md:gap-8">
+                               <span className="text-slate-600/50 w-5 md:w-6 text-right select-none font-bold">5</span>
+                               <span className="ml-3 md:ml-8 whitespace-pre-wrap break-all"><span className="text-foreground">endpoint</span>: <span className="text-emerald-400">"{endpoint}"</span>,</span>
                             </div>
-                            <div className="flex gap-4 md:gap-8">
-                               <span className="text-slate-600/50 w-6 text-right select-none font-bold">6</span>
-                               <span className="ml-4 md:ml-8 whitespace-nowrap"><span className="text-foreground">block</span>: <span className="text-amber-400">true </span> <span className="text-slate-500 italic ml-3">// Enables automatic redirection</span></span>
+                            <div className="flex gap-3 md:gap-8">
+                               <span className="text-slate-600/50 w-5 md:w-6 text-right select-none font-bold">6</span>
+                               <span className="ml-3 md:ml-8 whitespace-pre-wrap break-all"><span className="text-foreground">block</span>: <span className="text-amber-400">true </span> <span className="text-slate-500 italic ml-2 md:ml-3">// Enables automatic redirection</span></span>
                             </div>
-                            <div className="flex gap-4 md:gap-8">
-                               <span className="text-slate-600/50 w-6 text-right select-none font-bold">7</span>
-                               <span className="whitespace-nowrap">&#125;));</span>
+                            <div className="flex gap-3 md:gap-8">
+                               <span className="text-slate-600/50 w-5 md:w-6 text-right select-none font-bold">7</span>
+                               <span className="whitespace-pre-wrap break-all">&#125;));</span>
                             </div>
                          </div>
                       </div>
