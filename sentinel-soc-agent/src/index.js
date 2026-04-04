@@ -29,6 +29,11 @@ const THREAT_PATTERNS = {
 };
 
 const sentinelAgent = (config) => {
+  // Use production Render URL by default if not provided
+  const endpoint = config.endpoint || 'https://sentinel-soc-backend.onrender.com/api/v1/logs';
+  const apiKey = config.apiKey;
+  const shouldBlockLocally = config.block !== undefined ? config.block : true;
+
   return async (req, res, next) => {
     // 1. Prepare search area
     const searchContext = JSON.stringify({
@@ -40,7 +45,7 @@ const sentinelAgent = (config) => {
 
     let detectedThreat = null;
 
-    // 2. Perform Regex Analytics
+    // 2. Perform Regex Analytics locally
     for (const [threatType, patterns] of Object.entries(THREAT_PATTERNS)) {
       if (patterns.some(pattern => pattern.test(searchContext))) {
         detectedThreat = threatType;
@@ -48,7 +53,7 @@ const sentinelAgent = (config) => {
       }
     }
 
-    // 3. If threat detected, async report to SOC Backend
+    // 3. If threat detected locally, report to SOC Backend and decide on redirection
     if (detectedThreat) {
       const logData = {
         threatType: detectedThreat,
@@ -61,19 +66,35 @@ const sentinelAgent = (config) => {
         }
       };
 
-      // Non-blocking report
-      fetch(config.endpoint, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-api-key': config.apiKey,
-        },
-        body: JSON.stringify(logData),
-      }).catch(() => {});
+      try {
+        // Report to backend and wait for response to handle the 'redirect' flow
+        const response = await fetch(endpoint, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'x-api-key': apiKey,
+          },
+          body: JSON.stringify(logData),
+        });
 
-      // 4. Block the request if Protection Mode is ON
-      if (config.block) {
-        return res.status(403).send(generateBlockPage(detectedThreat, logData.sourceIp));
+        const data = await response.json();
+
+        // 4. Production Redirection Logic (WAF Flow)
+        if (data.isThreat && data.redirectUrl) {
+          console.log(`[SentinelSOC] Blocking attack of type ${detectedThreat}. Redirecting to safety.`);
+          return res.redirect(data.redirectUrl);
+        }
+
+        // Fallback to local block page if redirected hasn't happened and local blocking is ON
+        if (shouldBlockLocally) {
+          return res.status(403).send(generateBlockPage(detectedThreat, logData.sourceIp));
+        }
+      } catch (err) {
+        console.error('[SentinelSOC Agent] Failed to report threat or redirect:', err.message);
+        // Fallback to local blocking logic on connection error 
+        if (shouldBlockLocally) {
+          return res.status(403).send(generateBlockPage(detectedThreat, logData.sourceIp));
+        }
       }
     }
 
