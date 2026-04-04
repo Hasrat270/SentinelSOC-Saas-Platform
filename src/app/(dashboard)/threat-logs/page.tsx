@@ -127,7 +127,7 @@ export default function ThreatLogsPage() {
 
   return (
     <div className="space-y-8 animate-in fade-in slide-in-from-bottom-2 duration-700">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <h1 className="text-3xl font-bold tracking-tight text-foreground">Live Threat Feed</h1>
           <p className="text-muted-foreground mt-2 text-sm leading-relaxed max-w-2xl">
@@ -135,7 +135,7 @@ export default function ThreatLogsPage() {
           </p>
         </div>
         <div className={cn(
-          "flex items-center gap-2 px-3 py-1.5 rounded-lg border font-bold text-[10px] uppercase tracking-widest transition-all duration-500",
+          "w-fit flex items-center gap-2 px-3 py-1.5 rounded-lg border font-bold text-[10px] uppercase tracking-widest transition-all duration-500",
           connected 
             ? "bg-primary/10 border-primary/20 text-primary" 
             : "bg-red-500/10 border-red-500/20 text-red-500"
@@ -159,17 +159,17 @@ export default function ThreatLogsPage() {
               <div className="p-2 rounded-lg bg-primary/10 border border-primary/20">
                 <ShieldAlert className="w-4.5 h-4.5 text-primary" />
               </div>
-              <div>
-                <CardTitle className="text-foreground text-[11px] font-bold uppercase tracking-widest">Security Events</CardTitle>
-                <p className="text-[10px] text-muted-foreground mt-0.5 uppercase tracking-tight">
+              <div className="min-w-0">
+                <CardTitle className="text-foreground text-[11px] font-bold uppercase tracking-widest truncate">Security Events</CardTitle>
+                <p className="text-[10px] text-muted-foreground mt-0.5 uppercase tracking-tight truncate">
                   {total} Records Synchronized
                 </p>
               </div>
             </div>
-            <div className="flex items-center gap-2">
-               <div className="flex items-center gap-2 px-3 py-1 bg-secondary/50 border border-border rounded-md">
-                 <Terminal className="w-3.5 h-3.5 text-muted-foreground" />
-                 <span className="text-[10px] font-mono text-muted-foreground">SOC-CONSOLE-1.0</span>
+            <div className="flex items-center gap-2 shrink-0">
+               <div className="flex items-center gap-1.5 md:gap-2 px-2 md:px-3 py-0.5 md:py-1 bg-secondary/50 border border-border rounded-md">
+                 <Terminal className="w-3 md:w-3.5 h-3 md:h-3.5 text-muted-foreground" />
+                 <span className="text-[8px] md:text-[10px] font-mono text-muted-foreground">SOC-CONSOLE-1.0</span>
                </div>
             </div>
           </div>
